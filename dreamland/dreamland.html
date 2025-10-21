@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌙 Dreamland - Diário de Sonhos</title>
+    <link rel="stylesheet" href="dreamland.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Efeito de fundo animado -->
+    <div class="stars-bg">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+    <div class="mist"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">🌙 Dreamland</h1>
+            <p class="tagline">Um refúgio para seus sonhos</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn-icon" id="randomDreamBtn" title="Sonho Aleatório">
+                <span>✨</span>
+            </button>
+            <button class="btn-icon" id="chartBtn" title="Jornal do Sono">
+                <span>📊</span>
+            </button>
+            <button class="btn-icon" id="exportBtn" title="Exportar">
+                <span>💾</span>
+            </button>
+            <button class="btn-primary" id="newDreamBtn">
+                <span>+ Novo Sonho</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Filtros -->
+    <div class="filters-container">
+        <div class="filter-group">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar sonhos..." class="search-input">
+        </div>
+        <div class="filter-group">
+            <label>Emoção:</label>
+            <select id="emotionFilter" class="filter-select">
+                <option value="">Todas</option>
+                <option value="paz">🕊️ Paz</option>
+                <option value="alegria">😊 Alegria</option>
+                <option value="medo">😨 Medo</option>
+                <option value="tristeza">😢 Tristeza</option>
+                <option value="saudade">💭 Saudade</option>
+                <option value="amor">❤️ Amor</option>
+                <option value="ansiedade">😰 Ansiedade</option>
+                <option value="confusao">🌀 Confusão</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Visualização:</label>
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="cards">🎴 Cards</button>
+                <button class="view-btn" data-view="list">📋 Lista</button>
+                <button class="view-btn" data-view="gallery">🖼️ Galeria</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container Principal -->
+    <main class="main-container">
+        <div id="dreamsContainer" class="dreams-grid"></div>
+        <div id="emptyState" class="empty-state">
+            <span class="empty-icon">🌙</span>
+            <h2>Nenhum sonho ainda</h2>
+            <p>Comece a registrar seus sonhos e crie seu diário onírico</p>
+        </div>
+    </main>
+
+    <!-- Modal de Cadastro/Edição -->
+    <div class="modal" id="dreamModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">✨ Novo Sonho</h2>
+                <button class="btn-close" id="closeModal">×</button>
+            </div>
+            <form id="dreamForm" class="dream-form">
+                <input type="hidden" id="dreamId">
+                
+                <div class="form-group">
+                    <label for="dreamTitle">Título do Sonho</label>
+                    <input type="text" id="dreamTitle" required placeholder="Um título para seu sonho...">
+                </div>
+
+                <div class="form-group">
+                    <label for="dreamDate">Data</label>
+                    <input type="date" id="dreamDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dreamDescription">Descrição</label>
+                    <textarea id="dreamDescription" rows="6" required placeholder="Descreva seu sonho em detalhes..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dreamEmotion">Emoção Principal</label>
+                        <select id="dreamEmotion" required>
+                            <option value="">Selecione...</option>
+                            <option value="paz">🕊️ Paz</option>
+                            <option value="alegria">😊 Alegria</option>
+                            <option value="medo">😨 Medo</option>
+                            <option value="tristeza">😢 Tristeza</option>
+                            <option value="saudade">💭 Saudade</option>
+                            <option value="amor">❤️ Amor</option>
+                            <option value="ansiedade">😰 Ansiedade</option>
+                            <option value="confusao">🌀 Confusão</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dreamSymbol">Símbolo</label>
+                        <select id="dreamSymbol" required>
+                            <option value="">Selecione...</option>
+                            <option value="🌙">🌙 Lua</option>
+                            <option value="⭐">⭐ Estrela</option>
+                            <option value="🌊">🌊 Água</option>
+                            <option value="🌲">🌲 Floresta</option>
+                            <option value="🏠">🏠 Casa</option>
+                            <option value="🚪">🚪 Porta</option>
+                            <option value="🪟">🪟 Janela</option>
+                            <option value="🦋">🦋 Borboleta</option>
+                            <option value="🕊️">🕊️ Pomba</option>
+                            <option value="🌺">🌺 Flor</option>
+                            <option value="🔑">🔑 Chave</option>
+                            <option value="📖">📖 Livro</option>
+                            <option value="🎭">🎭 Máscara</option>
+                            <option value="🌈">🌈 Arco-íris</option>
+                            <option value="☁️">☁️ Nuvem</option>
+                            <option value="⚡">⚡ Raio</option>
+                            <option value="🌹">🌹 Rosa</option>
+                            <option value="🦉">🦉 Coruja</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dreamTags">Tags (separadas por vírgula)</label>
+                    <input type="text" id="dreamTags" placeholder="ex: voar, família, infância">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelBtn">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar Sonho</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Visualização Completa -->
+    <div class="modal" id="viewModal">
+        <div class="modal-content modal-view">
+            <button class="btn-close" id="closeViewModal">×</button>
+            <div id="viewModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Modal de Gráficos -->
+    <div class="modal" id="chartModal">
+        <div class="modal-content modal-chart">
+            <div class="modal-header">
+                <h2>📊 Jornal do Sono</h2>
+                <button class="btn-close" id="closeChartModal">×</button>
+            </div>
+            <div class="chart-container">
+                <div class="chart-section">
+                    <h3>Emoções Recorrentes</h3>
+                    <canvas id="emotionsChart"></canvas>
+                </div>
+                <div class="chart-section">
+                    <h3>Frequência de Sonhos</h3>
+                    <canvas id="frequencyChart"></canvas>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalDreams">0</div>
+                        <div class="stat-label">Total de Sonhos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="mostCommonEmotion">—</div>
+                        <div class="stat-label">Emoção Mais Comum</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="mostCommonSymbol">—</div>
+                        <div class="stat-label">Símbolo Recorrente</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Exportação -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>💾 Exportar Sonhos</h2>
+                <button class="btn-close" id="closeExportModal">×</button>
+            </div>
+            <div class="export-options">
+                <button class="btn-export" id="exportJsonBtn">
+                    <span class="export-icon">📦</span>
+                    <div>
+                        <div class="export-title">Exportar como JSON</div>
+                        <div class="export-desc">Formato estruturado para backup</div>
+                    </div>
+                </button>
+                <button class="btn-export" id="exportTxtBtn">
+                    <span class="export-icon">📄</span>
+                    <div>
+                        <div class="export-title">Exportar como TXT</div>
+                        <div class="export-desc">Texto simples e legível</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="dreamland.js"></script>
+</body>
+</html>
+
