@@ -1,6 +1,6 @@
 # 🌙 Dreamland - Diário de Sonhos
 
-Um aplicativo web poético e introspectivo para registrar, explorar e analisar seus sonhos.
+Aplicativo web para registrar, explorar e analisar sonhos.
 
 ## ✨ Funcionalidades
 
@@ -139,4 +139,5 @@ Possíveis melhorias:
 **Criado com 💜 para tornar o ato de anotar sonhos uma experiência onírica**
 
 *"Os sonhos são ilustrações do livro que sua alma está escrevendo sobre você." — Marsha Norman*
+
 
