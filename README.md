@@ -7,7 +7,7 @@ Aplicativo web para registrar, explorar e analisar sonhos.
 ### 📝 Registro de Sonhos
 - **Cadastro completo**: Título, descrição detalhada, data, tags personalizadas
 - **Emoções**: 8 emoções principais (paz, alegria, medo, tristeza, saudade, amor, ansiedade, confusão)
-- **Símbolos**: 18 símbolos oníricos para representar visualmente seus sonhos
+- **Símbolos**: 18 símbolos para representar visualmente seus sonhos
 - **Edição e exclusão**: Gerencie seus sonhos facilmente
 
 ### 🔍 Busca e Filtros
@@ -70,4 +70,5 @@ Aplicativo web para registrar, explorar e analisar sonhos.
 3. **Use tags**: Ajudam a encontrar padrões (ex: "família", "voar", "escola")
 4. **Revise regularmente**: Use o botão de sonho aleatório para revisitar memórias
 5. **Observe padrões**: O Jornal do Sono pode revelar insights sobre seu estado emocional
+
 
