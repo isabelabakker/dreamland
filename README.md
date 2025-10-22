@@ -1,4 +1,4 @@
-# 🌙 Dreamland - Diário de Sonhos
+# 🌙 Oniria - Diário de Sonhos
 
 Aplicativo web para registrar, explorar e analisar sonhos.
 
@@ -70,6 +70,7 @@ Aplicativo web para registrar, explorar e analisar sonhos.
 3. **Use tags**: Ajudam a encontrar padrões (ex: "família", "voar", "escola")
 4. **Revise regularmente**: Use o botão de sonho aleatório para revisitar memórias
 5. **Observe padrões**: O Jornal do Sono pode revelar insights sobre seu estado emocional
+
 
 
 
