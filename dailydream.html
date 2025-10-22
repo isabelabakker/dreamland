@@ -31,683 +31,1690 @@
 --!>
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Onira - Diário de Sonhos</title>
-    
-    <!-- 1. Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- 2. Chart.js (Para o Jornal do Sono) -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- 3. Day.js (Para formatar datas) -->
-    <script src="https://cdn.jsdelivr.net/npm/dayjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs/plugin/relativeTime.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs/locale/pt-br.js"></script>
-    
-    <!-- 4. Lucide Icons (Para ícones) -->
-    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide.js"></script>
-    
-    <!-- 5. Estilos e Animações -->
+    <title>🌙 Daily Dream - Diário de Sonhos</title>
     <style>
-        /* Usa uma fonte serifada elegante, como solicitado */
-        body {
-            font-family: 'Georgia', 'Times New Roman', Times, serif;
-            background-color: #0F172A; /* Azul-acinzentado escuro */
+
+    /* ===== VARIÁVEIS E RESET ===== */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+        --gradient-start: #1a1625;
+        --gradient-mid: #2d2438;
+        --gradient-end: #0f1524;
+        --surface-glass: rgba(45, 36, 56, 0.55);
+        --surface-strong: rgba(45, 36, 56, 0.75);
+        --surface-card: rgba(33, 27, 46, 0.75);
+        --border-color: rgba(139, 123, 168, 0.3);
+        --border-strong: rgba(139, 123, 168, 0.45);
+        --text-primary: #f8f5f0;
+        --text-secondary: rgba(248, 245, 240, 0.75);
+        --accent-violet: #8b7ba8;
+        --accent-gold: #d4af37;
+        --accent-gold-soft: #e8d4a0;
+        --shadow-sm: 0 12px 35px rgba(10, 8, 20, 0.35);
+        --shadow-lg: 0 35px 70px rgba(10, 8, 20, 0.45);
+        --radius-lg: 24px;
+        --radius-md: 18px;
+        --radius-sm: 12px;
+        --transition-base: 0.3s ease;
+        --space-1: 0.5rem;
+        --space-2: 0.75rem;
+        --space-3: 1rem;
+        --space-4: 1.5rem;
+        --space-5: 2rem;
+        --space-6: 2.5rem;
+
+        /* Emoções */
+        --emotion-paz: #9ed8db;
+        --emotion-alegria: #ffd93d;
+        --emotion-medo: #8e44ad;
+        --emotion-tristeza: #5d9cec;
+        --emotion-saudade: #b8a6d9;
+        --emotion-amor: #ff7979;
+        --emotion-ansiedade: #ff9f43;
+        --emotion-confusao: #a8dadc;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-mid) 45%, var(--gradient-end) 100%);
+        color: var(--text-primary);
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font-family: inherit;
+        color: inherit;
+    }
+
+    button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base), border-color var(--transition-base), color var(--transition-base);
+    }
+
+    input,
+    select,
+    textarea {
+        border: none;
+        background: transparent;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: rgba(248, 245, 240, 0.5);
+    }
+
+    :focus-visible {
+        outline: 2px solid rgba(212, 175, 55, 0.45);
+        outline-offset: 2px;
+    }
+
+    .app-shell {
+        position: relative;
+        z-index: 1;
+        width: min(100%, 1080px);
+        margin: 0 auto;
+        padding: clamp(1.25rem, 3vw, 2.5rem) clamp(1rem, 4vw, 3rem) clamp(3rem, 6vw, 4.5rem);
+        display: flex;
+        flex-direction: column;
+        gap: clamp(1.75rem, 3vw, 2.75rem);
+    }
+
+    .app-main {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+
+    /* ===== ANIMAÇÕES DE FUNDO ===== */
+    .stars-bg {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: var(--accent-gold-soft);
+        border-radius: 50%;
+        box-shadow: 0 0 6px var(--accent-gold);
+        animation: twinkle 3s infinite ease-in-out;
+    }
+
+    .star:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+    .star:nth-child(2) { top: 30%; left: 80%; animation-delay: 0.4s; }
+    .star:nth-child(3) { top: 50%; left: 15%; animation-delay: 0.9s; }
+    .star:nth-child(4) { top: 70%; left: 60%; animation-delay: 1.3s; }
+    .star:nth-child(5) { top: 20%; left: 50%; animation-delay: 1.8s; }
+    .star:nth-child(6) { top: 80%; left: 30%; animation-delay: 0.2s; }
+    .star:nth-child(7) { top: 40%; left: 90%; animation-delay: 1.1s; }
+    .star:nth-child(8) { top: 60%; left: 10%; animation-delay: 1.6s; }
+    .star:nth-child(9) { top: 15%; left: 70%; animation-delay: 0.7s; }
+    .star:nth-child(10) { top: 85%; left: 85%; animation-delay: 2.1s; }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.25; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.6); }
+    }
+
+    .mist {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(139, 123, 168, 0.08) 0%, transparent 70%);
+        animation: mistMove 20s infinite ease-in-out;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    @keyframes mistMove {
+        0%, 100% { opacity: 0.35; transform: translate(0, 0) scale(1); }
+        50% { opacity: 0.6; transform: translate(22px, -18px) scale(1.05); }
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+        background: var(--surface-glass);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        backdrop-filter: blur(18px);
+        padding: clamp(1.25rem, 2.5vw, 1.75rem);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: clamp(1rem, 2vw, 1.5rem);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .header-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        text-align: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo img {
+        display: block;
+        height: clamp(3rem, 2.25rem + 2vw, 4.25rem);
+        width: auto;
+        filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.35));
+    }
+
+    .tagline {
+        font-size: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
+        color: var(--accent-violet);
+        font-style: italic;
+        opacity: 0.85;
+    }
+
+    .header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-1);
+        justify-content: center;
+    }
+
+    .header-actions .btn-icon {
+        flex: 0 0 48px;
+    }
+
+    .header-actions .btn-primary {
+        flex: 1 1 100%;
+    }
+
+    /* ===== BOTÕES ===== */
+    .btn-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(139, 123, 168, 0.18);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        box-shadow: 0 10px 25px rgba(10, 8, 20, 0.25);
+    }
+
+    .btn-icon:hover,
+    .btn-icon:focus-visible {
+        background: rgba(139, 123, 168, 0.32);
+        border-color: var(--border-strong);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 16px 32px rgba(10, 8, 20, 0.4);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--accent-violet), var(--surface-card));
+        border-radius: 999px;
+        padding: 0.75rem 1.8rem;
+        color: var(--text-primary);
+        font-weight: 600;
+        border: 1px solid rgba(139, 123, 168, 0.4);
+        box-shadow: 0 15px 45px rgba(139, 123, 168, 0.4);
+        min-height: 48px;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 22px 55px rgba(139, 123, 168, 0.55);
+    }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        padding: 0.7rem 1.5rem;
+        color: var(--text-primary);
+        min-height: 46px;
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+        background: rgba(255, 255, 255, 0.14);
+    }
+
+    .btn-small {
+        background: rgba(139, 123, 168, 0.18);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-sm);
+        padding: 0.55rem 1rem;
+        color: var(--text-primary);
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+    }
+
+    .btn-small:hover,
+    .btn-small:focus-visible {
+        background: rgba(139, 123, 168, 0.28);
+    }
+
+    .btn-delete {
+        background: rgba(255, 121, 121, 0.16);
+        border-color: rgba(255, 121, 121, 0.35);
+        color: #ff9aa5;
+    }
+
+    .btn-delete:hover,
+    .btn-delete:focus-visible {
+        background: rgba(255, 121, 121, 0.28);
+    }
+
+    /* ===== FILTROS ===== */
+    .filters-container {
+        background: var(--surface-glass);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        backdrop-filter: blur(18px);
+        padding: clamp(1rem, 2.5vw, 1.5rem);
+        display: grid;
+        gap: clamp(0.75rem, 2vw, 1.25rem);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .filter-group {
+        display: grid;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .filter-group label {
+        font-size: 0.85rem;
+        color: var(--accent-violet);
+        font-weight: 500;
+        letter-spacing: 0.02em;
+    }
+
+    .search-input,
+    .filter-select {
+        width: 100%;
+        background: rgba(139, 123, 168, 0.14);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 0.75rem 1.1rem;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+        transition: border-color var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .search-input:focus,
+    .filter-select:focus {
+        border-color: var(--border-strong);
+        background: rgba(139, 123, 168, 0.22);
+        box-shadow: 0 0 0 3px rgba(139, 123, 168, 0.15);
+    }
+
+    .filter-select {
+        appearance: none;
+        cursor: pointer;
+        background-image: linear-gradient(45deg, transparent 50%, rgba(248, 245, 240, 0.6) 50%),
+            linear-gradient(135deg, rgba(248, 245, 240, 0.6) 50%, transparent 50%);
+        background-position: calc(100% - 1rem) calc(1.05rem), calc(100% - 0.75rem) calc(1.05rem);
+        background-size: 6px 6px;
+        background-repeat: no-repeat;
+        padding-right: 2.5rem;
+    }
+
+    .view-toggle {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .view-btn {
+        background: rgba(139, 123, 168, 0.16);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-sm);
+        padding: 0.55rem 1rem;
+        font-size: 0.85rem;
+        color: var(--text-primary);
+        white-space: nowrap;
+        flex: 1 0 auto;
+    }
+
+    .view-btn.active,
+    .view-btn:hover,
+    .view-btn:focus-visible {
+        background: rgba(139, 123, 168, 0.32);
+        border-color: var(--border-strong);
+    }
+
+    /* ===== CONTAINER PRINCIPAL ===== */
+    .main-container {
+        background: var(--surface-strong);
+        border: 1px solid rgba(139, 123, 168, 0.35);
+        border-radius: var(--radius-lg);
+        backdrop-filter: blur(20px);
+        padding: clamp(1.25rem, 3vw, 2rem);
+        box-shadow: var(--shadow-lg);
+        display: flex;
+        flex-direction: column;
+        gap: clamp(1rem, 2.5vw, 1.75rem);
+        min-height: 320px;
+    }
+
+    .dreams-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: clamp(1rem, 2.5vw, 1.75rem);
+        animation: fadeIn 0.6s ease;
+    }
+
+    .dreams-grid.list-view {
+        gap: clamp(1rem, 2vw, 1.5rem);
+    }
+
+    .dreams-grid.gallery-view {
+        gap: clamp(0.85rem, 2vw, 1.25rem);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(18px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== CARDS DE SONHOS ===== */
+    .dream-card {
+        position: relative;
+        background: var(--surface-card);
+        border: 1px solid rgba(139, 123, 168, 0.35);
+        border-radius: var(--radius-md);
+        padding: clamp(1.1rem, 2.5vw, 1.6rem);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+        cursor: pointer;
+        transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+        overflow: hidden;
+    }
+
+    .dream-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        border-top: 4px solid var(--card-emotion, rgba(139, 123, 168, 0.4));
+        opacity: 0.85;
+        pointer-events: none;
+    }
+
+    .dream-card:hover {
+        transform: translateY(-6px) scale(1.01);
+        box-shadow: 0 24px 45px rgba(10, 8, 20, 0.45);
+        border-color: var(--card-emotion, rgba(139, 123, 168, 0.55));
+    }
+
+    .dream-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: var(--space-1);
+        flex-wrap: wrap;
+    }
+
+    .dream-symbol {
+        font-size: clamp(2.1rem, 1.8rem + 1vw, 2.6rem);
+        filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.35));
+    }
+
+    .dream-emotion {
+        background: rgba(139, 123, 168, 0.2);
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        color: var(--card-emotion, var(--accent-violet));
+        border: 1px solid var(--card-emotion, rgba(139, 123, 168, 0.5));
+        letter-spacing: 0.02em;
+    }
+
+    .dream-title {
+        font-size: clamp(1.15rem, 1.05rem + 0.4vw, 1.45rem);
+        color: var(--accent-gold);
+        font-weight: 500;
+    }
+
+    .dream-date {
+        font-size: 0.85rem;
+        color: var(--accent-violet);
+        font-style: italic;
+    }
+
+    .dream-description {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .dream-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .tag {
+        background: rgba(139, 123, 168, 0.24);
+        border-radius: 999px;
+        padding: 0.35rem 0.75rem;
+        font-size: 0.78rem;
+        color: var(--accent-violet);
+    }
+
+    .dream-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: var(--space-1);
+        margin-top: var(--space-2);
+        padding-top: var(--space-2);
+        border-top: 1px solid rgba(139, 123, 168, 0.25);
+    }
+
+    .dream-card.list-item {
+        gap: var(--space-2);
+    }
+
+    .dream-card.list-item .dream-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+    }
+
+    .dream-card.list-item .dream-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-1);
+    }
+
+    .dream-card.gallery-item {
+        align-items: center;
+        text-align: center;
+    }
+
+    .dream-card.gallery-item .dream-symbol {
+        font-size: clamp(2.6rem, 2.2rem + 1vw, 3.1rem);
+    }
+
+    .dream-card.gallery-item .dream-title {
+        font-size: clamp(1.05rem, 0.98rem + 0.3vw, 1.25rem);
+    }
+
+    .dream-card.gallery-item .dream-description {
+        -webkit-line-clamp: 2;
+        font-size: 0.85rem;
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+        display: none;
+        text-align: center;
+        padding: clamp(3rem, 6vw, 4rem) clamp(1.5rem, 4vw, 2.5rem);
+        border-radius: var(--radius-md);
+        border: 1px dashed rgba(139, 123, 168, 0.4);
+        color: var(--accent-violet);
+        background: rgba(139, 123, 168, 0.12);
+    }
+
+    .empty-icon {
+        font-size: clamp(3.5rem, 3rem + 2vw, 5rem);
+        display: block;
+        margin-bottom: 1rem;
+        animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-16px); }
+    }
+
+    /* ===== MODALS ===== */
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(5, 4, 12, 0.88);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        padding: 1.5rem;
+        overflow-y: auto;
+    }
+
+    .modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        background: linear-gradient(135deg, rgba(45, 36, 56, 0.92), rgba(26, 22, 37, 0.92));
+        border: 1px solid rgba(139, 123, 168, 0.45);
+        border-radius: var(--radius-lg);
+        width: min(100%, 560px);
+        max-height: 90dvh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-lg);
+        animation: slideUp 0.4s ease;
+    }
+
+    .modal-content.modal-chart {
+        width: min(100%, 960px);
+    }
+
+    .modal-content.modal-view {
+        width: min(100%, 720px);
+    }
+
+    .modal-content.modal-small {
+        width: min(100%, 420px);
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+        padding: clamp(1.25rem, 2.5vw, 1.75rem);
+        border-bottom: 1px solid rgba(139, 123, 168, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .modal-header h2 {
+        color: var(--accent-gold);
+        font-weight: 500;
+        font-size: clamp(1.2rem, 1.1rem + 0.4vw, 1.6rem);
+    }
+
+    .btn-close {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: var(--text-primary);
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        font-size: 1.6rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-close:hover,
+    .btn-close:focus-visible {
+        background: rgba(255, 255, 255, 0.18);
+        transform: rotate(90deg);
+    }
+
+    /* ===== FORMULÁRIO ===== */
+    .dream-form {
+        padding: clamp(1.25rem, 2.5vw, 1.75rem);
+        display: grid;
+        gap: clamp(1rem, 2.5vw, 1.5rem);
+    }
+
+    .form-group {
+        display: grid;
+        gap: 0.6rem;
+    }
+
+    .form-group label {
+        color: var(--accent-violet);
+        font-size: 0.9rem;
+        letter-spacing: 0.02em;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        background: rgba(139, 123, 168, 0.14);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 0.8rem 1rem;
+        color: var(--text-primary);
+        font-size: 1rem;
+        transition: border-color var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        border-color: var(--border-strong);
+        background: rgba(139, 123, 168, 0.24);
+        box-shadow: 0 0 0 3px rgba(139, 123, 168, 0.2);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 160px;
+        line-height: 1.65;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .form-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+
+    /* ===== VISUALIZAÇÃO COMPLETA ===== */
+    .dream-view-full {
+        padding: clamp(1.5rem, 3vw, 2.25rem);
+        display: grid;
+        gap: clamp(1.5rem, 3vw, 2.25rem);
+    }
+
+    .dream-view-header {
+        text-align: center;
+        display: grid;
+        gap: 1rem;
+    }
+
+    .dream-view-symbol {
+        font-size: clamp(3.5rem, 3rem + 2vw, 5rem);
+        display: block;
+        margin: 0 auto;
+    }
+
+    .dream-view-title {
+        font-size: clamp(1.5rem, 1.35rem + 0.8vw, 2rem);
+        color: var(--accent-gold);
+        font-weight: 500;
+    }
+
+    .dream-view-meta {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    .dream-view-description {
+        font-size: 1rem;
+        line-height: 1.8;
+        color: var(--text-primary);
+        text-align: left;
+    }
+
+    .dream-view-analysis {
+        background: rgba(139, 123, 168, 0.16);
+        border-left: 4px solid var(--accent-gold);
+        padding: clamp(1.25rem, 2.5vw, 1.75rem);
+        border-radius: var(--radius-md);
+    }
+
+    .dream-view-analysis h3 {
+        color: var(--accent-gold);
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+        font-weight: 500;
+    }
+
+    .dream-view-analysis p {
+        line-height: 1.7;
+        color: rgba(248, 245, 240, 0.92);
+        font-style: italic;
+    }
+
+    /* ===== GRÁFICOS ===== */
+    .chart-container {
+        padding: clamp(1.5rem, 3vw, 2.25rem);
+        display: grid;
+        gap: clamp(1.5rem, 3vw, 2rem);
+    }
+
+    .chart-section {
+        background: rgba(45, 36, 56, 0.65);
+        border: 1px solid rgba(139, 123, 168, 0.3);
+        border-radius: var(--radius-md);
+        padding: clamp(1rem, 2.5vw, 1.5rem);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .chart-section h3 {
+        color: var(--accent-gold);
+        font-size: clamp(1rem, 0.95rem + 0.3vw, 1.2rem);
+        margin-bottom: 1rem;
+        font-weight: 500;
+    }
+
+    .chart-section canvas {
+        max-height: 320px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: clamp(1rem, 2.5vw, 1.5rem);
+    }
+
+    .stat-card {
+        background: rgba(139, 123, 168, 0.18);
+        border: 1px solid rgba(139, 123, 168, 0.3);
+        border-radius: var(--radius-md);
+        padding: clamp(1.1rem, 2.5vw, 1.5rem);
+        text-align: center;
+        box-shadow: 0 12px 30px rgba(10, 8, 20, 0.3);
+    }
+
+    .stat-value {
+        font-size: clamp(1.6rem, 1.3rem + 0.6vw, 2rem);
+        color: var(--accent-gold);
+        margin-bottom: 0.35rem;
+        font-weight: 600;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: var(--accent-violet);
+        letter-spacing: 0.02em;
+    }
+
+    /* ===== EXPORTAÇÃO ===== */
+    .export-options {
+        padding: clamp(1.25rem, 2.5vw, 1.75rem);
+        display: grid;
+        gap: 1rem;
+    }
+
+    .btn-export {
+        background: rgba(139, 123, 168, 0.14);
+        border: 1px solid rgba(139, 123, 168, 0.3);
+        border-radius: var(--radius-md);
+        padding: clamp(1rem, 2.5vw, 1.5rem);
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        text-align: left;
+        transition: transform var(--transition-base), background var(--transition-base), border-color var(--transition-base);
+    }
+
+    .btn-export:hover,
+    .btn-export:focus-visible {
+        background: rgba(139, 123, 168, 0.24);
+        border-color: var(--border-strong);
+        transform: translateX(4px);
+    }
+
+    .export-icon {
+        font-size: 2.3rem;
+    }
+
+    .export-title {
+        color: var(--accent-gold);
+        font-size: 1.05rem;
+        margin-bottom: 0.25rem;
+        font-weight: 500;
+    }
+
+    .export-desc {
+        color: var(--accent-violet);
+        font-size: 0.9rem;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: rgba(26, 22, 37, 0.55);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(139, 123, 168, 0.5);
+        border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(139, 123, 168, 0.7);
+    }
+
+    /* ===== MEDIA QUERIES ===== */
+    @media (min-width: 540px) {
+        .header-actions {
+            justify-content: flex-end;
         }
 
-        /* Esconde elementos com o atributo 'hidden' */
-        [hidden] {
-            display: none;
+        .header-actions .btn-primary {
+            flex: 0 0 auto;
         }
 
-        /* Animação de estrelas piscando */
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.8; }
+        .filters-container {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (min-width: 720px) {
+        .filters-container {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            align-items: end;
         }
 
-        .star {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 6px 2px #E0D1A8; /* Bege-dourado */
-            animation: twinkle 4s infinite alternate;
-            z-index: 0;
-        }
-        
-        /* Scrollbar suave */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0F172A;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
+        .filters-container .filter-group:first-child {
+            grid-column: span 2;
         }
 
-        /* Foco em sensação de sonho para cards */
-        .dream-card {
-            transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+        .dreams-grid:not(.list-view) {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
-        .dream-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(196, 181, 253, 0.1); /* Sombra violeta sutil */
+
+        .form-row {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+
+        .form-actions {
+            flex-direction: row;
+        }
+
+        .form-actions button {
+            width: auto;
+        }
+
+        .chart-container {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .chart-container .stats-grid {
+            grid-column: 1 / -1;
+        }
+    }
+
+    @media (min-width: 900px) {
+        .filters-container {
+            grid-template-columns: 2fr 1fr 1fr;
+        }
+
+        .filters-container .filter-group:first-child {
+            grid-column: auto;
+        }
+
+        .dream-card.list-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .dream-card.list-item .dream-symbol {
+            font-size: clamp(2.6rem, 2.2rem + 1vw, 3.1rem);
+        }
+
+        .dream-card.list-item .dream-actions {
+            flex-direction: column;
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+            gap: 0.75rem;
+        }
+
+        .dreams-grid.gallery-view {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+    }
+
+    @media (max-width: 640px) {
+        .modal {
+            padding: 0;
+        }
+
+        .modal.active {
+            align-items: flex-end;
+        }
+
+        .modal-content {
+            border-radius: 24px 24px 0 0;
+            max-height: 88dvh;
+            width: 100%;
+        }
+
+        .header-actions .btn-icon {
+            flex: 1 0 48px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+<body>
+    <!-- Efeito de fundo animado -->
+    <div class="stars-bg">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+    <div class="mist"></div>
 
-<body class="bg-slate-900 text-gray-300 min-h-screen relative overflow-x-hidden">
 
-    <!-- Contêiner para as estrelas de fundo -->
-    <div id="star-container" class="absolute inset-0 z-0 pointer-events-none"></div>
-
-    <!-- Contêiner principal da aplicação -->
-    <div class="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-
-        <!-- Cabeçalho -->
-        <header class="flex flex-col sm:flex-row justify-between items-center mb-6 pb-4 border-b border-slate-700">
-            <h1 class="text-3xl font-bold text-violet-300 mb-4 sm:mb-0">
-                🌙 Onira
-            </h1>
-            <nav class="flex flex-wrap justify-center gap-2">
-                <button data-view="view-home" class="nav-button bg-slate-800 hover:bg-slate-700 text-violet-300 px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
-                    <i data-lucide="home"></i>
-                    <span>Início</span>
+    <div class="app-shell">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo"><img src="/logo.png" alt="Daily Dream"></h1>
+                <p class="tagline">Seu diário de sonhos inteligente</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-icon" id="randomDreamBtn" title="Sonho Aleatório">
+                    <span>✨</span>
                 </button>
-                <button data-view="view-add" id="nav-add-button" class="nav-button bg-slate-800 hover:bg-slate-700 text-gray-300 px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
-                    <i data-lucide="plus"></i>
-                    <span>Adicionar Sonho</span>
+                <button class="btn-icon" id="chartBtn" title="Jornal do Sono">
+                    <span>📊</span>
                 </button>
-                <button data-view="view-journal" class="nav-button bg-slate-800 hover:bg-slate-700 text-gray-300 px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
-                    <i data-lucide="bar-chart-2"></i>
-                    <span>Jornal</span>
+                <button class="btn-icon" id="exportBtn" title="Exportar">
+                    <span>💾</span>
                 </button>
-                <button data-view="view-settings" class="nav-button bg-slate-800 hover:bg-slate-700 text-gray-300 px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
-                    <i data-lucide="settings"></i>
-                    <span>Config.</span>
+                <button class="btn-primary" id="newDreamBtn">
+                    <span>+ Novo Sonho</span>
                 </button>
-            </nav>
+            </div>
         </header>
 
-        <main>
-
-            <!-- ==== VISÃO 1: INÍCIO (LISTA DE SONHOS) ==== -->
-            <div id="view-home" class="app-view">
-                <!-- Filtros e Controles -->
-                <div class="mb-6 p-4 bg-slate-800/50 backdrop-blur-sm rounded-lg flex flex-col md:flex-row gap-4">
-                    <input id="search-keyword" type="text" placeholder="Buscar por palavra-chave..." class="flex-grow bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400">
-                    
-                    <select id="search-emotion" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-violet-400">
-                        <option value="">Todas as Emoções</option>
-                        <!-- Opções de emoção serão preenchidas por JS -->
+        <main class="app-main">
+            <!-- Filtros -->
+            <section class="filters-container">
+                <div class="filter-group">
+                    <input type="text" id="searchInput" placeholder="🔍 Buscar sonhos..." class="search-input">
+                </div>
+                <div class="filter-group">
+                    <label for="emotionFilter">Emoção:</label>
+                    <select id="emotionFilter" class="filter-select">
+                        <option value="">Todas</option>
+                        <option value="paz">🕊️ Paz</option>
+                        <option value="alegria">😊 Alegria</option>
+                        <option value="medo">😨 Medo</option>
+                        <option value="tristeza">😢 Tristeza</option>
+                        <option value="saudade">💭 Saudade</option>
+                        <option value="amor">❤️ Amor</option>
+                        <option value="ansiedade">😰 Ansiedade</option>
+                        <option value="confusao">🌀 Confusão</option>
                     </select>
-                    
-                    <input id="search-tag" type="text" placeholder="Filtrar por tag..." class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400">
                 </div>
-                
-                <!-- Controles de Visualização -->
-                <div class="mb-6 flex flex-wrap justify-between items-center gap-4">
-                    <div>
-                        <button id="view-mode-gallery" class="view-mode-button bg-violet-600 text-white px-3 py-2 rounded-l-lg transition-colors flex items-center gap-2">
-                            <i data-lucide="layout-grid"></i>
-                            <span>Galeria</span>
-                        </button>
-                        <button id="view-mode-list" class="view-mode-button bg-slate-700 text-gray-300 px-3 py-2 rounded-r-lg transition-colors flex items-center gap-2">
-                            <i data-lucide="list"></i>
-                            <span>Lista</span>
-                        </button>
-                    </div>
-                    <button id="random-dream-button" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
-                        <i data-lucide="shuffle"></i>
-                        <span>Sonho Aleatório</span>
-                    </button>
-                </div>
-
-                <!-- Contêiner dos Sonhos -->
-                <div id="dream-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Cards de sonho serão inseridos aqui -->
-                    <p id="loading-dreams" class="text-gray-400 col-span-full text-center">Carregando seus sonhos...</p>
-                </div>
-            </div>
-
-            <!-- ==== VISÃO 2: ADICIONAR/EDITAR SONHO ==== -->
-            <div id="view-add" class="app-view hidden">
-                <form id="dream-form" class="max-w-2xl mx-auto p-6 bg-slate-800 rounded-lg shadow-lg space-y-4">
-                    <h2 id="form-title" class="text-2xl font-bold text-violet-300 mb-4">Novo Sonho</h2>
-                    
-                    <div>
-                        <label for="dream-title" class="block text-sm font-medium text-gray-300 mb-1">Título</label>
-                        <input type="text" id="dream-title" required class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-violet-400">
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label for="dream-date" class="block text-sm font-medium text-gray-300 mb-1">Data</label>
-                            <input type="date" id="dream-date" required class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-violet-400">
-                        </div>
-                        
-                        <div>
-                            <label for="dream-emotion" class="block text-sm font-medium text-gray-300 mb-1">Emoção Principal</label>
-                            <select id="dream-emotion" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-violet-400">
-                                <!-- Opções de emoção -->
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label for="dream-symbol" class="block text-sm font-medium text-gray-300 mb-1">Símbolo (Emoji)</label>
-                            <input type="text" id="dream-symbol" maxlength="2" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-center focus:outline-none focus:ring-2 focus:ring-violet-400">
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label for="dream-description" class="block text-sm font-medium text-gray-300 mb-1">Descrição</label>
-                        <textarea id="dream-description" rows="8" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-violet-400" placeholder="Descreva o que você se lembra..."></textarea>
-                    </div>
-
-                    <div>
-                        <label for="dream-tags" class="block text-sm font-medium text-gray-300 mb-1">Tags (separadas por vírgula)</label>
-                        <input type="text" id="dream-tags" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-violet-400" placeholder="ex: voar, escola, água">
-                    </div>
-                    
-                    <!-- Botões de Ação -->
-                    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4">
-                        <div class="flex gap-4">
-                            <button type="submit" class="bg-violet-600 hover:bg-violet-500 text-white px-5 py-2 rounded-lg transition-colors flex items-center gap-2">
-                                <i data-lucide="save"></i>
-                                <span id="save-button-text">Salvar Sonho</span>
-                            </button>
-                            <button type="button" id="cancel-button" class="bg-slate-600 hover:bg-slate-500 text-gray-200 px-5 py-2 rounded-lg transition-colors">
-                                Cancelar
-                            </button>
-                        </div>
-                        
-                        <div class="flex gap-4">
-                             <button type="button" id="analysis-button" class="bg-amber-600 hover:bg-amber-500 text-white px-5 py-2 rounded-lg transition-colors flex items-center gap-2 hidden">
-                                <i data-lucide="sparkles"></i>
-                                <span>Análise Poética</span>
-                            </button>
-                            <button type="button" id="delete-button" class="bg-red-700 hover:bg-red-600 text-white px-5 py-2 rounded-lg transition-colors flex items-center gap-2 hidden">
-                                <i data-lucide="trash-2"></i>
-                                <span>Excluir</span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            
-            <!-- ==== VISÃO 3: JORNAL DO SONO (GRÁFICO) ==== -->
-            <div id="view-journal" class="app-view hidden">
-                <h2 class="text-2xl font-bold text-violet-300 mb-4">Jornal do Sono</h2>
-                <div class="p-4 bg-slate-800 rounded-lg shadow-lg">
-                    <p class="text-gray-400 mb-4">Emoções mais recorrentes em seus sonhos:</p>
-                    <canvas id="journal-chart" width="400" height="200"></canvas>
-                </div>
-            </div>
-
-            <!-- ==== VISÃO 4: CONFIGURAÇÕES E EXPORTAÇÃO ==== -->
-            <div id="view-settings" class="app-view hidden">
-                <h2 class="text-2xl font-bold text-violet-300 mb-4">Configurações</h2>
-                <div class="p-6 bg-slate-800 rounded-lg shadow-lg max-w-md">
-                    <h3 class="text-lg font-semibold text-amber-200 mb-2">Exportar Sonhos</h3>
-                    <p class="text-gray-400 mb-4">Faça um backup de todos os seus sonhos em um arquivo JSON.</p>
-                    <button id="export-button" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
-                        <i data-lucide="download"></i>
-                        <span>Exportar para JSON</span>
-                    </button>
-                    
-                    <div class="mt-8 pt-4 border-t border-slate-700">
-                         <h3 class="text-lg font-semibold text-amber-200 mb-2">Seu ID de Usuário</h3>
-                         <p class="text-gray-400 mb-2 text-sm">Este ID é único para sua sessão. Seus dados estão salvos na nuvem.</p>
-                         <p id="user-id-display" class="text-xs text-slate-500 bg-slate-900 p-2 rounded break-all">Carregando...</p>
+                <div class="filter-group">
+                    <label>Visualização:</label>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="cards">🎴 Cards</button>
+                        <button class="view-btn" data-view="list">📋 Lista</button>
+                        <button class="view-btn" data-view="gallery">🖼️ Galeria</button>
                     </div>
                 </div>
-            </div>
+            </section>
 
+            <!-- Lista de Sonhos -->
+            <section class="main-container">
+                <div id="dreamsContainer" class="dreams-grid" aria-live="polite"></div>
+                <div id="emptyState" class="empty-state">
+                    <span class="empty-icon">🌙</span>
+                    <h2>Nenhum sonho ainda</h2>
+                    <p>Comece a registrar seus sonhos e crie seu diário onírico</p>
+                </div>
+            </section>
         </main>
-        
-        <!-- ==== MODAL GENÉRICO (Alertas, Análise, Sonho Aleatório) ==== -->
-        <div id="modal-container" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-            <div class="bg-slate-800 p-6 rounded-lg shadow-2xl max-w-md w-full border border-slate-700">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 id="modal-title" class="text-xl font-bold text-violet-300"></h3>
-                    <button id="modal-close-button" class="text-gray-400 hover:text-white">
-                        <i data-lucide="x"></i>
-                    </button>
+    </div>
+
+    <!-- Modal de Cadastro/Edição -->
+    <div class="modal" id="dreamModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">✨ Novo Sonho</h2>
+                <button class="btn-close" id="closeModal">×</button>
+            </div>
+            <form id="dreamForm" class="dream-form">
+                <input type="hidden" id="dreamId">
+                
+                <div class="form-group">
+                    <label for="dreamTitle">Título do Sonho</label>
+                    <input type="text" id="dreamTitle" required placeholder="Um título para seu sonho...">
                 </div>
-                <div id="modal-content" class="text-gray-300 mb-6 prose prose-invert prose-p:text-gray-300 prose-headings:text-violet-300">
-                    <!-- Conteúdo do modal -->
+
+                <div class="form-group">
+                    <label for="dreamDate">Data</label>
+                    <input type="date" id="dreamDate" required>
                 </div>
-                <div id="modal-actions" class="flex justify-end gap-4">
-                    <button id="modal-cancel-button" class="bg-slate-600 hover:bg-slate-500 text-gray-200 px-4 py-2 rounded-lg transition-colors hidden">
-                        Cancelar
-                    </button>
-                    <button id="modal-confirm-button" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg transition-colors hidden">
-                        Confirmar
-                    </button>
+
+                <div class="form-group">
+                    <label for="dreamDescription">Descrição</label>
+                    <textarea id="dreamDescription" rows="6" required placeholder="Descreva seu sonho em detalhes..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dreamEmotion">Emoção Principal</label>
+                        <select id="dreamEmotion" required>
+                            <option value="">Selecione...</option>
+                            <option value="paz">🕊️ Paz</option>
+                            <option value="alegria">😊 Alegria</option>
+                            <option value="medo">😨 Medo</option>
+                            <option value="tristeza">😢 Tristeza</option>
+                            <option value="saudade">💭 Saudade</option>
+                            <option value="amor">❤️ Amor</option>
+                            <option value="ansiedade">😰 Ansiedade</option>
+                            <option value="confusao">🌀 Confusão</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dreamSymbol">Símbolo</label>
+                        <select id="dreamSymbol" required>
+                            <option value="">Selecione...</option>
+                            <option value="🌙">🌙 Lua</option>
+                            <option value="⭐">⭐ Estrela</option>
+                            <option value="🌊">🌊 Água</option>
+                            <option value="🌲">🌲 Floresta</option>
+                            <option value="🏠">🏠 Casa</option>
+                            <option value="🚪">🚪 Porta</option>
+                            <option value="🪟">🪟 Janela</option>
+                            <option value="🦋">🦋 Borboleta</option>
+                            <option value="🕊️">🕊️ Pomba</option>
+                            <option value="🌺">🌺 Flor</option>
+                            <option value="🔑">🔑 Chave</option>
+                            <option value="📖">📖 Livro</option>
+                            <option value="🎭">🎭 Máscara</option>
+                            <option value="🌈">🌈 Arco-íris</option>
+                            <option value="☁️">☁️ Nuvem</option>
+                            <option value="⚡">⚡ Raio</option>
+                            <option value="🌹">🌹 Rosa</option>
+                            <option value="🦉">🦉 Coruja</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dreamTags">Tags (separadas por vírgula)</label>
+                    <input type="text" id="dreamTags" placeholder="ex: voar, família, infância">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelBtn">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar Sonho</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Visualização Completa -->
+    <div class="modal" id="viewModal">
+        <div class="modal-content modal-view">
+            <button class="btn-close" id="closeViewModal">×</button>
+            <div id="viewModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Modal de Gráficos -->
+    <div class="modal" id="chartModal">
+        <div class="modal-content modal-chart">
+            <div class="modal-header">
+                <h2>📊 Jornal do Sono</h2>
+                <button class="btn-close" id="closeChartModal">×</button>
+            </div>
+            <div class="chart-container">
+                <div class="chart-section">
+                    <h3>Emoções Recorrentes</h3>
+                    <canvas id="emotionsChart"></canvas>
+                </div>
+                <div class="chart-section">
+                    <h3>Frequência de Sonhos</h3>
+                    <canvas id="frequencyChart"></canvas>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalDreams">0</div>
+                        <div class="stat-label">Total de Sonhos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="mostCommonEmotion">—</div>
+                        <div class="stat-label">Emoção Mais Comum</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="mostCommonSymbol">—</div>
+                        <div class="stat-label">Símbolo Recorrente</div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-    </div> <!-- Fim do contêiner principal -->
+    <!-- Modal de Exportação -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>💾 Exportar Sonhos</h2>
+                <button class="btn-close" id="closeExportModal">×</button>
+            </div>
+            <div class="export-options">
+                <button class="btn-export" id="exportJsonBtn">
+                    <span class="export-icon">📦</span>
+                    <div>
+                        <div class="export-title">Exportar como JSON</div>
+                        <div class="export-desc">Formato estruturado para backup</div>
+                    </div>
+                </button>
+                <button class="btn-export" id="exportTxtBtn">
+                    <span class="export-icon">📄</span>
+                    <div>
+                        <div class="export-title">Exportar como TXT</div>
+                        <div class="export-desc">Texto simples e legível</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+    // ===== GERENCIAMENTO DE DADOS =====
+    class DreamManager {
+        constructor() {
+            this.dreams = this.loadDreams();
+            this.currentView = 'cards';
+            this.filters = {
+                search: '',
+                emotion: ''
+            };
+        }
 
-    <!-- ============================================= -->
-    <!-- SCRIPT (Firebase e Lógica da Aplicação)       -->
-    <!-- ============================================= -->
-    <script type="module">
-        // 1. Importações do Firebase
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { 
-            getAuth, 
-            signInAnonymously, 
-            signInWithCustomToken, 
-            onAuthStateChanged 
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { 
-            getFirestore, 
-            doc, 
-            getDoc, 
-            setDoc, 
-            addDoc,
-            updateDoc, 
-            deleteDoc, 
-            onSnapshot, 
-            collection, 
-            query,
-            setLogLevel
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        loadDreams() {
+            const stored = localStorage.getItem('dreamland_dreams');
+            return stored ? JSON.parse(stored) : [];
+        }
 
-        // Configuração do Day.js
-        dayjs.extend(dayjs_plugin_relativeTime);
-        dayjs.locale('pt-br');
+        saveDreams() {
+            localStorage.setItem('dreamland_dreams', JSON.stringify(this.dreams));
+        }
 
-        // === VARIÁVEIS GLOBAIS ===
-        let app, auth, db;
-        let userId;
-        let currentDreams = []; // Cache local dos sonhos
-        let currentEditingId = null;
-        let currentView = 'view-home';
-        let viewMode = 'gallery'; // 'gallery' ou 'list'
-        let chartInstance = null;
+        addDream(dream) {
+            dream.id = Date.now().toString();
+            dream.createdAt = new Date().toISOString();
+            this.dreams.unshift(dream);
+            this.saveDreams();
+            return dream;
+        }
 
-        // Emoções e Símbolos padrão
-        const emotions = {
-            'paz': { 'label': 'Paz', 'symbol': '🕊️', 'color': 'bg-blue-300/10 text-blue-300 border-blue-300/20' },
-            'alegria': { 'label': 'Alegria', 'symbol': '☀️', 'color': 'bg-yellow-300/10 text-yellow-300 border-yellow-300/20' },
-            'medo': { 'label': 'Medo', 'symbol': '🕷️', 'color': 'bg-purple-300/10 text-purple-300 border-purple-300/20' },
-            'tristeza': { 'label': 'Tristeza', 'symbol': '💧', 'color': 'bg-indigo-300/10 text-indigo-300 border-indigo-300/20' },
-            'raiva': { 'label': 'Raiva', 'symbol': '🔥', 'color': 'bg-red-300/10 text-red-300 border-red-300/20' },
-            'confusão': { 'label': 'Confusão', 'symbol': '🌀', 'color': 'bg-gray-300/10 text-gray-300 border-gray-300/20' },
-            'saudade': { 'label': 'Saudade', 'symbol': '⏳', 'color': 'bg-teal-300/10 text-teal-300 border-teal-300/20' },
-            'curiosidade': { 'label': 'Curiosidade', 'symbol': '🦋', 'color': 'bg-green-300/10 text-green-300 border-green-300/20' }
-        };
-
-        // === ELEMENTOS DO DOM ===
-        const views = document.querySelectorAll('.app-view');
-        const navButtons = document.querySelectorAll('.nav-button');
-        const dreamForm = document.getElementById('dream-form');
-        const dreamContainer = document.getElementById('dream-container');
-        const loadingMessage = document.getElementById('loading-dreams');
-        const formTitle = document.getElementById('form-title');
-        const saveButtonText = document.getElementById('save-button-text');
-        
-        // Campos do formulário
-        const dreamTitle = document.getElementById('dream-title');
-        const dreamDate = document.getElementById('dream-date');
-        const dreamEmotion = document.getElementById('dream-emotion');
-        const dreamSymbol = document.getElementById('dream-symbol');
-        const dreamDescription = document.getElementById('dream-description');
-        const dreamTags = document.getElementById('dream-tags');
-        
-        // Botões de ação do formulário
-        const cancelButton = document.getElementById('cancel-button');
-        const deleteButton = document.getElementById('delete-button');
-        const analysisButton = document.getElementById('analysis-button');
-
-        // Filtros
-        const searchKeyword = document.getElementById('search-keyword');
-        const searchEmotion = document.getElementById('search-emotion');
-        const searchTag = document.getElementById('search-tag');
-        
-        // Controles de visualização
-        const viewModeGallery = document.getElementById('view-mode-gallery');
-        const viewModeList = document.getElementById('view-mode-list');
-        const randomDreamButton = document.getElementById('random-dream-button');
-        
-        // Configurações
-        const exportButton = document.getElementById('export-button');
-        const userIdDisplay = document.getElementById('user-id-display');
-
-        // Modal
-        const modalContainer = document.getElementById('modal-container');
-        const modalTitle = document.getElementById('modal-title');
-        const modalContent = document.getElementById('modal-content');
-        const modalCloseButton = document.getElementById('modal-close-button');
-        const modalCancelButton = document.getElementById('modal-cancel-button');
-        const modalConfirmButton = document.getElementById('modal-confirm-button');
-
-
-        // === INICIALIZAÇÃO ===
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            initFirebase();
-            setupEventListeners();
-            populateEmotionSelects();
-            renderStars(50);
-            lucide.createIcons();
-            // Define a data de hoje no formulário
-            dreamDate.value = new Date().toISOString().split('T')[0];
-        });
-
-        async function initFirebase() {
-            try {
-                // Carrega configuração e ID do app (fornecidos pelo ambiente)
-                const appId = typeof __app_id !== 'undefined' ? __app_id : 'onira-default-app';
-                const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-
-                if (!firebaseConfig.apiKey) {
-                    console.error("Configuração do Firebase não encontrada.");
-                    showModal("Erro de Configuração", "Não foi possível carregar a configuração do Firebase. Seus dados não serão salvos.");
-                    return;
-                }
-                
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                setLogLevel('debug'); // Para debug no console
-
-                onAuthStateChanged(auth, async (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        userIdDisplay.textContent = userId;
-                        console.log("Usuário autenticado:", userId);
-                        await loadDreams();
-                    } else {
-                        // Tenta autenticação com token customizado ou anônimo
-                        try {
-                            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                                await signInWithCustomToken(auth, __initial_auth_token);
-                            } else {
-                                await signInAnonymously(auth);
-                            }
-                        } catch (authError) {
-                            console.error("Erro na autenticação:", authError);
-                            showModal("Erro de Autenticação", "Não foi possível autenticar. Seus dados não serão salvos.");
-                        }
-                    }
-                });
-
-            } catch (e) {
-                console.error("Erro ao inicializar Firebase:", e);
-                showModal("Erro Crítico", "Não foi possível iniciar a aplicação. Verifique o console para mais detalhes.");
+        updateDream(id, updatedDream) {
+            const index = this.dreams.findIndex(d => d.id === id);
+            if (index !== -1) {
+                this.dreams[index] = { ...this.dreams[index], ...updatedDream };
+                this.saveDreams();
+                return this.dreams[index];
             }
-        }
-        
-        // Retorna a referência da coleção de sonhos do usuário
-        function getDreamsCollection() {
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'onira-default-app';
-            return collection(db, 'artifacts', appId, 'users', userId, 'dreams');
+            return null;
         }
 
-        // === LÓGICA DE DADOS (FIRESTORE) ===
+        deleteDream(id) {
+            this.dreams = this.dreams.filter(d => d.id !== id);
+            this.saveDreams();
+        }
 
-        async function loadDreams() {
-            if (!userId) return;
+        getDream(id) {
+            return this.dreams.find(d => d.id === id);
+        }
 
-            const q = query(getDreamsCollection());
+        getFilteredDreams() {
+            return this.dreams.filter(dream => {
+                const matchesSearch = !this.filters.search || 
+                    dream.title.toLowerCase().includes(this.filters.search.toLowerCase()) ||
+                    dream.description.toLowerCase().includes(this.filters.search.toLowerCase()) ||
+                    (dream.tags && dream.tags.some(tag => tag.toLowerCase().includes(this.filters.search.toLowerCase())));
             
-            onSnapshot(q, (snapshot) => {
-                currentDreams = [];
-                snapshot.forEach((doc) => {
-                    currentDreams.push({ id: doc.id, ...doc.data() });
-                });
-                
-                // Ordena por data (mais recentes primeiro)
-                currentDreams.sort((a, b) => new Date(b.date) - new Date(a.date));
-                
-                console.log("Sonhos carregados:", currentDreams.length);
-                applyFilters(); // Renderiza os sonhos com filtros atuais
-                updateJournal(); // Atualiza o gráfico
-                
-            }, (error) => {
-                console.error("Erro ao carregar sonhos:", error);
-                showModal("Erro de Leitura", "Não foi possível carregar seus sonhos do banco de dados.");
-                loadingMessage.textContent = "Erro ao carregar sonhos.";
+                const matchesEmotion = !this.filters.emotion || dream.emotion === this.filters.emotion;
+            
+                return matchesSearch && matchesEmotion;
             });
         }
 
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-            
-            const dreamData = {
-                title: dreamTitle.value,
-                date: dreamDate.value,
-                emotion: dreamEmotion.value,
-                symbol: dreamSymbol.value || (emotions[dreamEmotion.value]?.symbol || '•'),
-                description: dreamDescription.value,
-                tags: dreamTags.value.split(',').map(tag => tag.trim().toLowerCase()).filter(Boolean), // Array de tags
-                updatedAt: new Date().toISOString()
+        getRandomDream() {
+            if (this.dreams.length === 0) return null;
+            const randomIndex = Math.floor(Math.random() * this.dreams.length);
+            return this.dreams[randomIndex];
+        }
+
+        getEmotionStats() {
+            const stats = {};
+            this.dreams.forEach(dream => {
+                stats[dream.emotion] = (stats[dream.emotion] || 0) + 1;
+            });
+            return stats;
+        }
+
+        getSymbolStats() {
+            const stats = {};
+            this.dreams.forEach(dream => {
+                stats[dream.symbol] = (stats[dream.symbol] || 0) + 1;
+            });
+            return stats;
+        }
+
+        getFrequencyByMonth() {
+            const frequency = {};
+            this.dreams.forEach(dream => {
+                const date = new Date(dream.date);
+                const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`;
+                frequency[monthYear] = (frequency[monthYear] || 0) + 1;
+            });
+            return frequency;
+        }
+    }
+
+    // ===== ANÁLISE POÉTICA =====
+    class DreamAnalyzer {
+        constructor() {
+            this.symbols = {
+                '🌙': ['mistério', 'feminino', 'intuição', 'ciclos'],
+                '⭐': ['esperança', 'desejo', 'destino', 'luz'],
+                '🌊': ['emoções', 'inconsciência', 'fluxo', 'mudança'],
+                '🌲': ['crescimento', 'estabilidade', 'natureza', 'raízes'],
+                '🏠': ['segurança', 'família', 'interior', 'proteção'],
+                '🚪': ['oportunidade', 'transição', 'escolha', 'passagem'],
+                '🪟': ['perspectiva', 'clareza', 'visão', 'possibilidades'],
+                '🦋': ['transformação', 'leveza', 'liberdade', 'renascimento'],
+                '🕊️': ['paz', 'pureza', 'mensagem', 'transcendência'],
+                '🌺': ['beleza', 'florescimento', 'abertura', 'sensibilidade'],
+                '🔑': ['solução', 'acesso', 'descoberta', 'poder'],
+                '📖': ['conhecimento', 'história', 'aprendizado', 'memória'],
+                '🎭': ['dualidade', 'persona', 'representação', 'emoção'],
+                '🌈': ['esperança', 'diversidade', 'renovação', 'promessa'],
+                '☁️': ['imaginação', 'leveza', 'transitório', 'sonho'],
+                '⚡': ['energia', 'súbito', 'iluminação', 'poder'],
+                '🌹': ['amor', 'paixão', 'beleza', 'dualidade'],
+                '🦉': ['sabedoria', 'noite', 'visão', 'mistério']
             };
 
-            try {
-                if (currentEditingId) {
-                    // Atualizando sonho existente
-                    const docRef = doc(db, getDreamsCollection().path, currentEditingId);
-                    await updateDoc(docRef, dreamData);
-                    console.log("Sonho atualizado:", currentEditingId);
-                } else {
-                    // Adicionando novo sonho
-                    await addDoc(getDreamsCollection(), {
-                        ...dreamData,
-                        createdAt: new Date().toISOString()
-                    });
-                    console.log("Novo sonho salvo");
-                }
-                
-                resetForm();
-                navigate('view-home');
-                
-            } catch (error) {
-                console.error("Erro ao salvar sonho:", error);
-                showModal("Erro ao Salvar", "Não foi possível salvar seu sonho. Tente novamente.");
-            }
+            this.emotions = {
+                'paz': ['serenidade', 'harmonia', 'equilíbrio', 'aceitação'],
+                'alegria': ['leveza', 'celebração', 'plenitude', 'gratidão'],
+                'medo': ['sombra', 'desconhecido', 'proteção', 'alerta'],
+                'tristeza': ['profundidade', 'introspecção', 'perda', 'transformação'],
+                'saudade': ['memória', 'conexão', 'tempo', 'amor'],
+                'amor': ['união', 'entrega', 'abertura', 'vulnerabilidade'],
+                'ansiedade': ['movimento', 'futuro', 'controle', 'inquietude'],
+                'confusao': ['caos', 'nebulosa', 'busca', 'transição']
+            };
+
+            this.templates = [
+                'Este sonho sussurra sobre {themes}. Há algo em você que anseia por {desire}.',
+                'Entre {themes}, seu inconsciente tece uma história de {desire}.',
+                'Um sonho que fala de {themes} — talvez seja hora de contemplar {desire}.',
+                'Nas entrelinhas de {themes}, reside um convite para {desire}.',
+                'Este sonho é um espelho refletindo {themes}, guiando você em direção a {desire}.'
+            ];
         }
+
+        analyze(dream) {
+            const symbolThemes = this.symbols[dream.symbol] || ['mistério', 'significado'];
+            const emotionThemes = this.emotions[dream.emotion] || ['sentimento', 'experiência'];
         
-        async function deleteDream() {
-            if (!currentEditingId) return;
-
-            try {
-                const docRef = doc(db, getDreamsCollection().path, currentEditingId);
-                await deleteDoc(docRef);
-                console.log("Sonho excluído:", currentEditingId);
-                
-                resetForm();
-                navigate('view-home');
-                closeModal();
-                
-            } catch (error) {
-                console.error("Erro ao excluir sonho:", error);
-                showModal("Erro ao Excluir", "Não foi possível excluir seu sonho. Tente novamente.");
-            }
+            const allThemes = [...symbolThemes, ...emotionThemes];
+            const selectedThemes = this.selectRandom(allThemes, 2).join(' e ');
+            const desire = this.generateDesire(dream.emotion);
+        
+            const template = this.templates[Math.floor(Math.random() * this.templates.length)];
+            return template
+                .replace('{themes}', selectedThemes)
+                .replace('{desire}', desire);
         }
 
-        // === LÓGICA DE RENDERIZAÇÃO E UI ===
+        selectRandom(arr, count) {
+            const shuffled = [...arr].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
 
-        function renderDreams(dreamsToRender) {
-            dreamContainer.innerHTML = ''; // Limpa o contêiner
+        generateDesire(emotion) {
+            const desires = {
+                'paz': 'encontrar seu centro',
+                'alegria': 'celebrar a vida',
+                'medo': 'enfrentar suas sombras',
+                'tristeza': 'permitir-se sentir',
+                'saudade': 'honrar o que passou',
+                'amor': 'abrir seu coração',
+                'ansiedade': 'confiar no processo',
+                'confusao': 'aceitar a incerteza'
+            };
+            return desires[emotion] || 'descobrir seu caminho';
+        }
+    }
 
-            if (dreamsToRender.length === 0) {
-                loadingMessage.textContent = "Nenhum sonho encontrado. Que tal adicionar um?";
-                dreamContainer.appendChild(loadingMessage);
+    // ===== RENDERIZAÇÃO =====
+    class DreamRenderer {
+        constructor(manager, analyzer) {
+            this.manager = manager;
+            this.analyzer = analyzer;
+            this.emotionColors = {
+                'paz': '#9ed8db',
+                'alegria': '#ffd93d',
+                'medo': '#8e44ad',
+                'tristeza': '#5d9cec',
+                'saudade': '#b8a6d9',
+                'amor': '#ff7979',
+                'ansiedade': '#ff9f43',
+                'confusao': '#a8dadc'
+            };
+            this.emotionLabels = {
+                'paz': '🕊️ Paz',
+                'alegria': '😊 Alegria',
+                'medo': '😨 Medo',
+                'tristeza': '😢 Tristeza',
+                'saudade': '💭 Saudade',
+                'amor': '❤️ Amor',
+                'ansiedade': '😰 Ansiedade',
+                'confusao': '🌀 Confusão'
+            };
+        }
+
+        renderDreams() {
+            const container = document.getElementById('dreamsContainer');
+            const emptyState = document.getElementById('emptyState');
+            const dreams = this.manager.getFilteredDreams();
+
+            if (dreams.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
                 return;
             }
-            
-            loadingMessage.textContent = ""; // Limpa msg de loading
-            
-            // Atualiza classes do contêiner com base no modo de visualização
-            if (viewMode === 'list') {
-                dreamContainer.className = 'flex flex-col gap-4';
-            } else {
-                dreamContainer.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
-            }
 
-            dreamsToRender.forEach(dream => {
-                const card = (viewMode === 'list') 
-                    ? createDreamListElement(dream) 
-                    : createDreamCardElement(dream);
-                dreamContainer.appendChild(card);
+            emptyState.style.display = 'none';
+            container.className = `dreams-grid ${this.manager.currentView}-view`;
+        
+            container.innerHTML = dreams.map(dream => this.createDreamCard(dream)).join('');
+        
+            // Adicionar event listeners
+            dreams.forEach(dream => {
+                this.attachCardListeners(dream.id);
             });
-            
-            lucide.createIcons(); // Recria ícones para os novos elementos
         }
 
-        function createDreamCardElement(dream) {
-            const emotion = emotions[dream.emotion] || { label: dream.emotion, symbol: dream.symbol || '•', color: 'bg-gray-300/10 text-gray-300 border-gray-300/20' };
-            const card = document.createElement('div');
-            card.className = `dream-card bg-slate-800 rounded-lg shadow-lg overflow-hidden cursor-pointer ${emotion.color} border`;
-            
-            card.innerHTML = `
-                <div class="p-5">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-3xl">${emotion.symbol}</span>
-                        <span class="text-xs text-gray-400">${dayjs(dream.date).format('DD/MM/YYYY')}</span>
+        createDreamCard(dream) {
+            const emotionColor = this.emotionColors[dream.emotion] || '#8b7ba8';
+            const emotionLabel = this.emotionLabels[dream.emotion] || dream.emotion;
+            const tags = dream.tags || [];
+            const formattedDate = this.formatDate(dream.date);
+
+            const cardClass = this.manager.currentView === 'list' ? 'list-item' : 
+                             this.manager.currentView === 'gallery' ? 'gallery-item' : '';
+
+            return `
+                <div class="dream-card ${cardClass}" data-id="${dream.id}" style="--card-emotion: ${emotionColor}">
+                    <div class="dream-card-header">
+                        <span class="dream-symbol">${dream.symbol}</span>
+                        <span class="dream-emotion">${emotionLabel}</span>
                     </div>
-                    <h3 class="text-xl font-semibold text-white truncate mb-2">${dream.title}</h3>
-                    <p class="text-gray-400 h-20 overflow-hidden text-ellipsis ...">
-                        ${dream.description.substring(0, 100)}${dream.description.length > 100 ? '...' : ''}
-                    </p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 text-xs rounded-full ${emotion.color} border">${emotion.label}</span>
-                        ${dream.tags.map(tag => `<span class="px-2 py-1 text-xs rounded-full bg-slate-700 text-gray-300">${tag}</span>`).join('')}
+                    <div class="dream-content">
+                        <h3 class="dream-title">${this.escapeHtml(dream.title)}</h3>
+                        <p class="dream-date">${formattedDate}</p>
+                        <p class="dream-description">${this.escapeHtml(dream.description)}</p>
+                        ${tags.length > 0 ? `
+                            <div class="dream-tags">
+                                ${tags.map(tag => `<span class="tag">#${this.escapeHtml(tag)}</span>`).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="dream-actions">
+                        <button class="btn-small btn-view" data-id="${dream.id}">👁️ Ver</button>
+                        <button class="btn-small btn-edit" data-id="${dream.id}">✏️ Editar</button>
+                        <button class="btn-small btn-delete" data-id="${dream.id}">🗑️ Excluir</button>
                     </div>
                 </div>
             `;
-            
-            card.addEventListener('click', () => showEditForm(dream));
-            return card;
         }
-        
-        function createDreamListElement(dream) {
-            const emotion = emotions[dream.emotion] || { label: dream.emotion, symbol: dream.symbol || '•', color: 'bg-gray-300/10 text-gray-300 border-gray-300/20' };
-            const card = document.createElement('div');
-            card.className = `dream-card bg-slate-800 rounded-lg shadow-lg cursor-pointer flex items-center p-4 gap-4 ${emotion.color} border`;
-            
-            card.innerHTML = `
-                <div class="text-3xl">${emotion.symbol}</div>
-                <div class="flex-grow">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-white">${dream.title}</h3>
-                        <span class="text-sm text-gray-400">${dayjs(dream.date).format('DD/MM/YYYY')}</span>
-                    </div>
-                    <p class="text-gray-400 text-sm truncate">
-                        ${dream.description.substring(0, 120)}${dream.description.length > 120 ? '...' : ''}
-                    </p>
-                </div>
-                <div class="flex-shrink-0">
-                    <span class="px-3 py-1 text-sm rounded-full ${emotion.color} border">${emotion.label}</span>
-                </div>
-            `;
-            
-            card.addEventListener('click', () => showEditForm(dream));
-            return card;
-        }
-        
-        function updateJournal() {
-            if (currentView !== 'view-journal') return; // Só renderiza se a visão estiver ativa
 
-            const ctx = document.getElementById('journal-chart').getContext('2d');
-            
-            // Processa dados para o gráfico
-            const emotionCounts = {};
-            Object.keys(emotions).forEach(key => emotionCounts[key] = 0);
-            
-            currentDreams.forEach(dream => {
-                if (emotions[dream.emotion]) {
-                    emotionCounts[dream.emotion]++;
-                }
+        attachCardListeners(dreamId) {
+            const viewBtn = document.querySelector(`.btn-view[data-id="${dreamId}"]`);
+            const editBtn = document.querySelector(`.btn-edit[data-id="${dreamId}"]`);
+            const deleteBtn = document.querySelector(`.btn-delete[data-id="${dreamId}"]`);
+
+            if (viewBtn) viewBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.showDreamView(dreamId);
             });
 
-            const labels = Object.values(emotions).map(e => e.label);
-            const data = Object.keys(emotions).map(key => emotionCounts[key]);
+            if (editBtn) editBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                app.openEditModal(dreamId);
+            });
 
-            // Destrói gráfico antigo se existir
-            if (chartInstance) {
-                chartInstance.destroy();
+            if (deleteBtn) deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.deleteDream(dreamId);
+            });
+        }
+
+        showDreamView(dreamId) {
+            const dream = this.manager.getDream(dreamId);
+            if (!dream) return;
+
+            const analysis = this.analyzer.analyze(dream);
+            const emotionLabel = this.emotionLabels[dream.emotion] || dream.emotion;
+            const formattedDate = this.formatDate(dream.date);
+            const tags = dream.tags || [];
+
+            const content = `
+                <div class="dream-view-full">
+                    <div class="dream-view-header">
+                        <span class="dream-view-symbol">${dream.symbol}</span>
+                        <h2 class="dream-view-title">${this.escapeHtml(dream.title)}</h2>
+                        <div class="dream-view-meta">
+                            <span class="dream-emotion">${emotionLabel}</span>
+                            <span class="dream-date">${formattedDate}</span>
+                        </div>
+                        ${tags.length > 0 ? `
+                            <div class="dream-tags">
+                                ${tags.map(tag => `<span class="tag">#${this.escapeHtml(tag)}</span>`).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="dream-view-description">
+                        ${this.escapeHtml(dream.description).replace(/\n/g, '<br>')}
+                    </div>
+                    <div class="dream-view-analysis">
+                        <h3>✨ Análise Poética</h3>
+                        <p>${analysis}</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('viewModalContent').innerHTML = content;
+            document.getElementById('viewModal').classList.add('active');
+        }
+
+        deleteDream(dreamId) {
+            if (confirm('Tem certeza que deseja excluir este sonho?')) {
+                this.manager.deleteDream(dreamId);
+                this.renderDreams();
             }
+        }
 
-            // Cria novo gráfico
-            chartInstance = new Chart(ctx, {
-                type: 'bar',
+        formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('pt-BR', options);
+        }
+
+        escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    }
+
+    // ===== GRÁFICOS =====
+    class ChartManager {
+        constructor(manager, renderer) {
+            this.manager = manager;
+            this.renderer = renderer;
+            this.charts = {};
+        }
+
+        showCharts() {
+            document.getElementById('chartModal').classList.add('active');
+        
+            // Limpar gráficos anteriores
+            if (this.charts.emotions) this.charts.emotions.destroy();
+            if (this.charts.frequency) this.charts.frequency.destroy();
+
+            // Criar novos gráficos
+            setTimeout(() => {
+                this.createEmotionsChart();
+                this.createFrequencyChart();
+                this.updateStats();
+            }, 100);
+        }
+
+        createEmotionsChart() {
+            const stats = this.manager.getEmotionStats();
+            const labels = Object.keys(stats).map(emotion => this.renderer.emotionLabels[emotion] || emotion);
+            const data = Object.values(stats);
+            const colors = Object.keys(stats).map(emotion => this.renderer.emotionColors[emotion] || '#8b7ba8');
+
+            const ctx = document.getElementById('emotionsChart').getContext('2d');
+            this.charts.emotions = new Chart(ctx, {
+                type: 'doughnut',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Número de Sonhos',
                         data: data,
-                        backgroundColor: [
-                            'rgba(139, 92, 246, 0.4)',  // Violeta
-                            'rgba(250, 204, 21, 0.4)',  // Amarelo
-                            'rgba(168, 85, 247, 0.4)',  // Roxo
-                            'rgba(99, 102, 241, 0.4)',  // Indigo
-                            'rgba(239, 68, 68, 0.4)',   // Vermelho
-                            'rgba(156, 163, 175, 0.4)', // Cinza
-                            'rgba(20, 184, 166, 0.4)',  // Teal
-                            'rgba(34, 197, 94, 0.4)',   // Verde
-                        ],
-                        borderColor: [
-                            'rgba(139, 92, 246, 1)',
-                            'rgba(250, 204, 21, 1)',
-                            'rgba(168, 85, 247, 1)',
-                            'rgba(99, 102, 241, 1)',
-                            'rgba(239, 68, 68, 1)',
-                            'rgba(156, 163, 175, 1)',
-                            'rgba(20, 184, 166, 1)',
-                            'rgba(34, 197, 94, 1)',
-                        ],
-                        borderWidth: 1
+                        backgroundColor: colors,
+                        borderColor: 'rgba(26, 22, 37, 0.8)',
+                        borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#f8f5f0',
+                                font: { size: 12, family: 'Georgia' },
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        createFrequencyChart() {
+            const frequency = this.manager.getFrequencyByMonth();
+            const sortedMonths = Object.keys(frequency).sort((a, b) => {
+                const [monthA, yearA] = a.split('/');
+                const [monthB, yearB] = b.split('/');
+                return new Date(yearA, monthA - 1) - new Date(yearB, monthB - 1);
+            });
+
+            const labels = sortedMonths.slice(-6); // Últimos 6 meses
+            const data = labels.map(month => frequency[month]);
+
+            const ctx = document.getElementById('frequencyChart').getContext('2d');
+            this.charts.frequency = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Sonhos registrados',
+                        data: data,
+                        borderColor: '#d4af37',
+                        backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#d4af37',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
                     plugins: {
                         legend: {
                             display: false
-                        },
-                        tooltip: {
-                            backgroundColor: '#0F172A',
-                            titleColor: '#E0D1A8',
-                            bodyColor: '#cbd5e1',
                         }
                     },
                     scales: {
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                color: '#94a3b8',
+                                color: '#8b7ba8',
                                 stepSize: 1
                             },
                             grid: {
-                                color: '#334155'
+                                color: 'rgba(139, 123, 168, 0.1)'
                             }
                         },
                         x: {
                             ticks: {
-                                color: '#94a3b8'
+                                color: '#8b7ba8'
                             },
                             grid: {
-                                display: false
+                                color: 'rgba(139, 123, 168, 0.1)'
                             }
                         }
                     }
@@ -715,308 +1722,237 @@
             });
         }
 
-        // Popula os <select> de emoções
-        function populateEmotionSelects() {
-            const optionsHtml = Object.keys(emotions).map(key => 
-                `<option value="${key}">${emotions[key].label}</option>`
-            ).join('');
-            
-            dreamEmotion.innerHTML = optionsHtml;
-            searchEmotion.innerHTML = `<option value="">Todas as Emoções</option>` + optionsHtml;
+        updateStats() {
+            const totalDreams = this.manager.dreams.length;
+            document.getElementById('totalDreams').textContent = totalDreams;
+
+            // Emoção mais comum
+            const emotionStats = this.manager.getEmotionStats();
+            const mostCommon = Object.entries(emotionStats).sort((a, b) => b[1] - a[1])[0];
+            document.getElementById('mostCommonEmotion').textContent = 
+                mostCommon ? this.renderer.emotionLabels[mostCommon[0]] : '—';
+
+            // Símbolo mais comum
+            const symbolStats = this.manager.getSymbolStats();
+            const mostCommonSymbol = Object.entries(symbolStats).sort((a, b) => b[1] - a[1])[0];
+            document.getElementById('mostCommonSymbol').textContent = 
+                mostCommonSymbol ? mostCommonSymbol[0] : '—';
+        }
+    }
+
+    // ===== EXPORTAÇÃO =====
+    class ExportManager {
+        constructor(manager) {
+            this.manager = manager;
         }
 
-        // === NAVEGAÇÃO E CONTROLES ===
-
-        function navigate(viewId) {
-            views.forEach(view => view.setAttribute('hidden', ''));
-            document.getElementById(viewId).removeAttribute('hidden');
-            currentView = viewId;
-            
-            // Atualiza destaque do botão de navegação
-            navButtons.forEach(button => {
-                if (button.dataset.view === viewId) {
-                    button.classList.add('bg-slate-700', 'text-violet-300');
-                    button.classList.remove('bg-slate-800', 'text-gray-300');
-                } else {
-                    button.classList.add('bg-slate-800', 'text-gray-300');
-                    button.classList.remove('bg-slate-700', 'text-violet-300');
-                }
-            });
-            
-            // Lógica especial ao entrar em visões
-            if (viewId === 'view-journal') {
-                updateJournal();
-            }
-            if (viewId === 'view-add') {
-                document.getElementById('nav-add-button').classList.add('bg-slate-700', 'text-violet-300');
-                document.getElementById('nav-add-button').classList.remove('bg-slate-800', 'text-gray-300');
-            }
-        }
-        
-        function applyFilters() {
-            const keyword = searchKeyword.value.toLowerCase();
-            const emotion = searchEmotion.value;
-            const tag = searchTag.value.toLowerCase();
-
-            const filteredDreams = currentDreams.filter(dream => {
-                const titleMatch = dream.title.toLowerCase().includes(keyword);
-                const descMatch = dream.description.toLowerCase().includes(keyword);
-                const emotionMatch = !emotion || dream.emotion === emotion;
-                const tagMatch = !tag || dream.tags.some(t => t.toLowerCase().includes(tag));
-                
-                return (titleMatch || descMatch) && emotionMatch && tagMatch;
-            });
-
-            renderDreams(filteredDreams);
-        }
-
-        function showEditForm(dream) {
-            resetForm();
-            currentEditingId = dream.id;
-            
-            formTitle.textContent = 'Editar Sonho';
-            saveButtonText.textContent = 'Atualizar Sonho';
-            dreamTitle.value = dream.title;
-            dreamDate.value = dream.date;
-            dreamEmotion.value = dream.emotion;
-            dreamSymbol.value = dream.symbol;
-            dreamDescription.value = dream.description;
-            dreamTags.value = dream.tags.join(', ');
-            
-            deleteButton.removeAttribute('hidden');
-            analysisButton.removeAttribute('hidden');
-            
-            navigate('view-add');
-        }
-
-        function resetForm() {
-            currentEditingId = null;
-            dreamForm.reset();
-            dreamDate.value = new Date().toISOString().split('T')[0]; // Reseta data para hoje
-            formTitle.textContent = 'Novo Sonho';
-            saveButtonText.textContent = 'Salvar Sonho';
-            deleteButton.setAttribute('hidden', '');
-            analysisButton.setAttribute('hidden', '');
-        }
-        
-        function setViewMode(mode) {
-            viewMode = mode;
-            if (mode === 'list') {
-                viewModeList.classList.add('bg-violet-600', 'text-white');
-                viewModeList.classList.remove('bg-slate-700', 'text-gray-300');
-                viewModeGallery.classList.add('bg-slate-700', 'text-gray-300');
-                viewModeGallery.classList.remove('bg-violet-600', 'text-white');
-            } else {
-                viewModeGallery.classList.add('bg-violet-600', 'text-white');
-                viewModeGallery.classList.remove('bg-slate-700', 'text-gray-300');
-                viewModeList.classList.add('bg-slate-700', 'text-gray-300');
-                viewModeList.classList.remove('bg-violet-600', 'text-white');
-            }
-            applyFilters(); // Re-renderiza com o novo modo
-        }
-
-        function exportData() {
-            try {
-                // Remove o ID do usuário dos dados exportados por privacidade
-                const exportableData = currentDreams.map(({ id, ...rest }) => rest);
-                const dataStr = JSON.stringify(exportableData, null, 2);
-                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-                
-                const exportFileDefaultName = `onira_sonhos_${dayjs().format('YYYYMMDD')}.json`;
-            
-                const linkElement = document.createElement('a');
-                linkElement.setAttribute('href', dataUri);
-                linkElement.setAttribute('download', exportFileDefaultName);
-                linkElement.click();
-            } catch (error) {
-                console.error("Erro ao exportar:", error);
-                showModal("Erro", "Não foi possível gerar o arquivo de exportação.");
-            }
-        }
-
-        // === FUNCIONALIDADES BÔNUS ===
-
-        function showRandomDream() {
-            if (currentDreams.length === 0) {
-                showModal("Ops!", "Você ainda não tem sonhos registrados para ver um aleatório.");
-                return;
-            }
-            
-            const randomDream = currentDreams[Math.floor(Math.random() * currentDreams.length)];
-            const emotion = emotions[randomDream.emotion] || { label: randomDream.emotion, symbol: randomDream.symbol };
-            
-            const content = `
-                <div class="text-center mb-4 text-4xl">${emotion.symbol}</div>
-                <p class="text-sm text-gray-400 text-center mb-4">${dayjs(randomDream.date).format('DD [de] MMMM [de] YYYY')}</p>
-                <p>${randomDream.description}</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                    ${randomDream.tags.map(tag => `<span class="px-2 py-1 text-xs rounded-full bg-slate-700 text-gray-300">${tag}</span>`).join('')}
-                </div>
-            `;
-            
-            showModal(`Sonho de ${dayjs(randomDream.date).fromNow()}: ${randomDream.title}`, content);
-        }
-        
-        function generatePoeticAnalysis() {
-            const emotionKey = dreamEmotion.value;
-            const tags = dreamTags.value.split(',').map(t => t.trim()).filter(Boolean);
-            const description = dreamDescription.value.toLowerCase();
-            
-            let analysis = "Este sonho fala sobre ";
-
-            // Lógica simples de interpretação
-            const themes = {
-                'paz': 'harmonia interior e aceitação',
-                'alegria': 'realização e otimismo',
-                'medo': 'transformação, o desconhecido e sombras a enfrentar',
-                'tristeza': 'liberação de sentimentos passados e cura',
-                'raiva': 'força reprimida e a necessidade de limites',
-                'confusão': 'busca por clareza e novos caminhos',
-                'saudade': 'conexões profundas e as pontes da memória',
-                'curiosidade': 'exploração e a abertura de novas portas'
+        exportAsJSON() {
+            const data = {
+                exported: new Date().toISOString(),
+                totalDreams: this.manager.dreams.length,
+                dreams: this.manager.dreams
             };
-            
-            analysis += themes[emotionKey] || 'sentimentos complexos';
 
-            if (tags.length > 0) {
-                analysis += `, tocando em símbolos de '${tags[0]}'`;
-                if (tags.length > 1) {
-                    analysis += ` e '${tags[1]}'`;
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            this.download(blob, `dreamland_backup_${this.getDateString()}.json`);
+        }
+
+        exportAsTXT() {
+            let content = '🌙 DREAMLAND - DIÁRIO DE SONHOS\n';
+            content += '═'.repeat(50) + '\n\n';
+            content += `Exportado em: ${new Date().toLocaleDateString('pt-BR')}\n`;
+            content += `Total de sonhos: ${this.manager.dreams.length}\n\n`;
+            content += '═'.repeat(50) + '\n\n';
+
+            this.manager.dreams.forEach((dream, index) => {
+                content += `\n${index + 1}. ${dream.title}\n`;
+                content += `${'─'.repeat(50)}\n`;
+                content += `${dream.symbol} | Data: ${new Date(dream.date).toLocaleDateString('pt-BR')}\n`;
+                content += `Emoção: ${dream.emotion}\n`;
+                if (dream.tags && dream.tags.length > 0) {
+                    content += `Tags: ${dream.tags.join(', ')}\n`;
                 }
-            }
-            
-            if (description.includes('água') || description.includes('rio') || description.includes('mar')) {
-                analysis += ". A presença da água sugere um mergulho no seu subconsciente, nas suas emoções mais profundas.";
-            } else if (description.includes('voar') || description.includes('céu')) {
-                analysis += ". A sensação de voar indica um desejo de liberdade, transcendência e uma nova perspectiva sobre a vida.";
-            } else if (description.includes('cair') || description.includes('queda')) {
-                analysis += ". A queda pode representar ansiedade ou perda de controle, mas também uma entrega ao inevitável.";
-            } else if (description.includes('casa') || description.includes('quarto')) {
-                analysis += ". A casa simboliza seu eu interior, seu refúgio e sua estrutura psíquica.";
-            } else {
-                analysis += ". É um convite para refletir sobre como esses elementos se conectam em sua vida desperta.";
-            }
+                content += `\n${dream.description}\n\n`;
+            });
 
-            showModal("Análise Poética (Simbólica)", `<p class="italic text-lg text-amber-200/80">${analysis}</p>`);
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            this.download(blob, `dreamland_sonhos_${this.getDateString()}.txt`);
         }
 
-        // === MODAL ===
+        download(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        getDateString() {
+            const now = new Date();
+            return `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}`;
+        }
+    }
+
+    // ===== APLICAÇÃO PRINCIPAL =====
+    class DreamlandApp {
+        constructor() {
+            this.manager = new DreamManager();
+            this.analyzer = new DreamAnalyzer();
+            this.renderer = new DreamRenderer(this.manager, this.analyzer);
+            this.chartManager = new ChartManager(this.manager, this.renderer);
+            this.exportManager = new ExportManager(this.manager);
         
-        // Função genérica para mostrar o modal
-        function showModal(title, content, confirmCallback = null) {
-            modalTitle.textContent = title;
-            modalContent.innerHTML = content;
-            
-            // Esconde/mostra botões de ação
-            modalConfirmButton.classList.toggle('hidden', !confirmCallback);
-            modalCancelButton.classList.toggle('hidden', !confirmCallback);
-            
-            // Remove listeners antigos para evitar chamadas múltiplas
-            const newConfirmButton = modalConfirmButton.cloneNode(true);
-            modalConfirmButton.parentNode.replaceChild(newConfirmButton, modalConfirmButton);
-            modalConfirmButton = newConfirmButton;
-            
-            if (confirmCallback) {
-                modalConfirmButton.addEventListener('click', confirmCallback);
-                modalConfirmButton.classList.remove('hidden');
-                modalCancelButton.classList.remove('hidden');
-            } else {
-                 modalConfirmButton.classList.add('hidden');
-                 modalCancelButton.classList.add('hidden');
-            }
-
-            modalContainer.classList.remove('hidden');
+            this.initializeEventListeners();
+            this.renderer.renderDreams();
+            this.setTodayDate();
         }
 
-        function closeModal() {
-            modalContainer.classList.add('hidden');
-            // Limpa conteúdo e botões
-            modalTitle.textContent = '';
-            modalContent.innerHTML = '';
-            modalConfirmButton.classList.add('hidden');
-            modalCancelButton.classList.add('hidden');
-        }
-        
-        // === EFEITOS VISUAIS ===
+        initializeEventListeners() {
+            // Botões principais
+            document.getElementById('newDreamBtn').addEventListener('click', () => this.openNewModal());
+            document.getElementById('randomDreamBtn').addEventListener('click', () => this.showRandomDream());
+            document.getElementById('chartBtn').addEventListener('click', () => this.chartManager.showCharts());
+            document.getElementById('exportBtn').addEventListener('click', () => this.openExportModal());
 
-        function renderStars(count) {
-            const container = document.getElementById('star-container');
-            container.innerHTML = ''; // Limpa estrelas existentes
-            for (let i = 0; i < count; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * 100}vh`;
-                star.style.animationDelay = `${Math.random() * 4}s`;
-                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                container.appendChild(star);
-            }
-        }
-        
-        // === SETUP DE EVENT LISTENERS ===
+            // Formulário
+            document.getElementById('dreamForm').addEventListener('submit', (e) => this.handleFormSubmit(e));
+            document.getElementById('cancelBtn').addEventListener('click', () => this.closeModal('dreamModal'));
 
-        function setupEventListeners() {
-            // Navegação principal
-            navButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const viewId = e.currentTarget.dataset.view;
-                    if (viewId === 'view-add') {
-                        resetForm();
-                        navigate('view-add');
-                    } else {
-                        navigate(viewId);
+            // Modals
+            document.getElementById('closeModal').addEventListener('click', () => this.closeModal('dreamModal'));
+            document.getElementById('closeViewModal').addEventListener('click', () => this.closeModal('viewModal'));
+            document.getElementById('closeChartModal').addEventListener('click', () => this.closeModal('chartModal'));
+            document.getElementById('closeExportModal').addEventListener('click', () => this.closeModal('exportModal'));
+
+            // Fechar modal ao clicar fora
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
                     }
                 });
             });
 
-            // Formulário de sonho
-            dreamForm.addEventListener('submit', handleFormSubmit);
-            cancelButton.addEventListener('click', () => {
-                resetForm();
-                navigate('view-home');
-            });
-            
-            deleteButton.addEventListener('click', () => {
-                showModal(
-                    'Excluir Sonho', 
-                    `<p>Tem certeza que deseja excluir o sonho "<strong>${dreamTitle.value}</strong>"? Esta ação não pode ser desfeita.</p>`,
-                    deleteDream // Passa a função de exclusão como callback
-                );
-            });
-            
-            analysisButton.addEventListener('click', generatePoeticAnalysis);
-
-            // Atualiza símbolo ao mudar emoção
-            dreamEmotion.addEventListener('change', (e) => {
-                const selectedEmotion = emotions[e.target.value];
-                if (selectedEmotion) {
-                    dreamSymbol.value = selectedEmotion.symbol;
-                }
+            // Filtros
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                this.manager.filters.search = e.target.value;
+                this.renderer.renderDreams();
             });
 
-            // Filtros da home
-            searchKeyword.addEventListener('input', applyFilters);
-            searchEmotion.addEventListener('change', applyFilters);
-            searchTag.addEventListener('input', applyFilters);
-            
-            // Controles de visualização
-            viewModeGallery.addEventListener('click', () => setViewMode('gallery'));
-            viewModeList.addEventListener('click', () => setViewMode('list'));
-            randomDreamButton.addEventListener('click', showRandomDream);
-            
-            // Configurações
-            exportButton.addEventListener('click', exportData);
-            
-            // Modal
-            modalCloseButton.addEventListener('click', closeModal);
-            modalCancelButton.addEventListener('click', closeModal);
-            // Fechar modal ao clicar fora
-            modalContainer.addEventListener('click', (e) => {
-                if (e.target === modalContainer) {
-                    closeModal();
-                }
+            document.getElementById('emotionFilter').addEventListener('change', (e) => {
+                this.manager.filters.emotion = e.target.value;
+                this.renderer.renderDreams();
+            });
+
+            // Visualizações
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    this.manager.currentView = e.target.dataset.view;
+                    this.renderer.renderDreams();
+                });
+            });
+
+            // Exportação
+            document.getElementById('exportJsonBtn').addEventListener('click', () => {
+                this.exportManager.exportAsJSON();
+                this.closeModal('exportModal');
+            });
+
+            document.getElementById('exportTxtBtn').addEventListener('click', () => {
+                this.exportManager.exportAsTXT();
+                this.closeModal('exportModal');
             });
         }
+
+        openNewModal() {
+            document.getElementById('modalTitle').textContent = '✨ Novo Sonho';
+            document.getElementById('dreamForm').reset();
+            document.getElementById('dreamId').value = '';
+            this.setTodayDate();
+            document.getElementById('dreamModal').classList.add('active');
+        }
+
+        openEditModal(dreamId) {
+            const dream = this.manager.getDream(dreamId);
+            if (!dream) return;
+
+            document.getElementById('modalTitle').textContent = '✏️ Editar Sonho';
+            document.getElementById('dreamId').value = dream.id;
+            document.getElementById('dreamTitle').value = dream.title;
+            document.getElementById('dreamDate').value = dream.date;
+            document.getElementById('dreamDescription').value = dream.description;
+            document.getElementById('dreamEmotion').value = dream.emotion;
+            document.getElementById('dreamSymbol').value = dream.symbol;
+            document.getElementById('dreamTags').value = dream.tags ? dream.tags.join(', ') : '';
+        
+            document.getElementById('dreamModal').classList.add('active');
+        }
+
+        handleFormSubmit(e) {
+            e.preventDefault();
+
+            const dreamData = {
+                title: document.getElementById('dreamTitle').value,
+                date: document.getElementById('dreamDate').value,
+                description: document.getElementById('dreamDescription').value,
+                emotion: document.getElementById('dreamEmotion').value,
+                symbol: document.getElementById('dreamSymbol').value,
+                tags: document.getElementById('dreamTags').value
+                    .split(',')
+                    .map(tag => tag.trim())
+                    .filter(tag => tag)
+            };
+
+            const dreamId = document.getElementById('dreamId').value;
+        
+            if (dreamId) {
+                this.manager.updateDream(dreamId, dreamData);
+            } else {
+                this.manager.addDream(dreamData);
+            }
+
+            this.closeModal('dreamModal');
+            this.renderer.renderDreams();
+        }
+
+        closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        showRandomDream() {
+            const dream = this.manager.getRandomDream();
+            if (dream) {
+                this.renderer.showDreamView(dream.id);
+            } else {
+                alert('Você ainda não tem sonhos registrados.');
+            }
+        }
+
+        openExportModal() {
+            if (this.manager.dreams.length === 0) {
+                alert('Você ainda não tem sonhos para exportar.');
+                return;
+            }
+            document.getElementById('exportModal').classList.add('active');
+        }
+
+        setTodayDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('dreamDate').value = today;
+        }
+    }
+
+    // ===== INICIALIZAÇÃO =====
+    let app;
+    document.addEventListener('DOMContentLoaded', () => {
+        app = new DreamlandApp();
+    });
     </script>
 </body>
 </html>
+
