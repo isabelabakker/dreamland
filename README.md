@@ -20,9 +20,10 @@ Oniria é um aplicativo web mobile-first desenhado para o registo de sonhos. Est
 
 ## 🚀 Como Executar
 - Este é um aplicativo standalone (autônomo).
-- Faça o download do ficheiro index.html.
+- Faça o download do ficheiro.
 - Abra-o em qualquer navegador web moderno (Chrome, Firefox, Safari, Edge, etc.).
 - E é tudo! A aplicação funcionará imediatamente.
+
 
 
 
