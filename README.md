@@ -1,76 +1,31 @@
-# 🌙 Oniria - Diário de Sonhos
+# 🌙 Oniria - Arquivo dos Sonhos
+Um diário de sonhos poético e minimalista, focado na introspecção.
 
-Aplicativo para registrar e analisar sonhos.
+## 💭 Conceito
+Oniria é um aplicativo web mobile-first desenhado para o registo de sonhos. A proposta é tornar o ato de anotar sonhos uma experiência quase onírica — suave, poética e introspectiva, diretamente no seu navegador.
 
-## ✨ Funcionalidades
+Esta aplicação funciona inteiramente offline, guardando todos os seus dados de forma segura no localStorage do seu navegador.
 
-### 📝 Registro de Sonhos
-- **Cadastro de sonho**: Título, descrição, data e tags personalizadas
-- **Emoções**: 8 emoções principais (paz, alegria, medo, tristeza, saudade, amor, ansiedade, confusão)
-- **Símbolos**: 18 símbolos para representar os sonhos visualmente 
+## ✨ Funcionalidades Principais
+- Registo Completo de Sonhos: Adicione, edite e apague sonhos com campos para título, descrição, data, emoção principal, símbolo (emoji) e tags.
+- Armazenamento Local: Todos os sonhos são guardados diretamente no seu dispositivo usando localStorage. É rápido, privado e funciona offline.
+- Diário do Sono (Simplificado): Uma visão rápida da frequência das suas emoções mais recorrentes, mostrando uma contagem de cada uma.
+- Explorar e Filtrar: Encontre sonhos antigos facilmente usando filtros por palavra-chave (no título ou descrição), tag ou emoção.
+- Sonho Aleatório: Redescubra uma memória com o botão "Sonho Aleatório".
+- Exportação de Dados: Faça backup de todos os seus sonhos a qualquer momento com a exportação para .json.
+- Design Imersivo: Interface escura (Modo Noite) com um fundo subtil de estrelas animadas para criar a atmosfera onírica.
 
-### 🔍 Busca e Filtros
-- **Busca inteligente**: Pesquise por título, descrição ou tags
-- **Filtro por emoção**: Encontre sonhos com emoções específicas
-- **Sonho aleatório**: Botão "✨" para redescobrir sonhos antigos
+## 🧠 Tecnologias Utilizadas
+- Esta versão do Oniria foi propositalmente construída para ser simples, leve e robusta, eliminando pontos de falha e dependências externas complexas.
+- HTML5: Para a estrutura semântica.
+- Tailwind CSS (via CDN): Para todo o design e layout responsivo.
+- JavaScript (Vanilla / Puro): Para toda a lógica da aplicação, manipulação do DOM e gestão de estado.
+- SVG Embutido: Ícones são incluídos diretamente no HTML para garantir carregamento instantâneo e funcionamento offline.
+- localStorage: Utilizado como banco de dados local para persistência de dados.
 
-### 🎨 Modos de Visualização
-- **Cards flutuantes**: Visualização padrão com animações suaves
-- **Lista**: Visualização em lista para fácil leitura
-- **Galeria**: Visualização compacta focada em símbolos
-
-### 📊 Jornal do Sono
-- **Gráfico de emoções**: Visualize suas emoções recorrentes
-- **Frequência temporal**: Veja quantos sonhos você registra por mês
-- **Estatísticas**: Total de sonhos, emoção mais comum, símbolo recorrente
-
-### 💾 Backup e Exportação
-- **JSON**: Exportação estruturada para backup completo
-- **TXT**: Exportação em texto legível para leitura ou impressão
-
-## 🚀 Como Usar
-
-1. **Abra o arquivo `dreamland.html` em seu navegador**
-   - Compatível com Chrome, Firefox, Safari e Edge
-
-2. **Crie seu primeiro sonho**
-   - Clique no botão "+ Novo Sonho"
-   - Preencha os detalhes do seu sonho
-   - Escolha uma emoção e símbolo
-   - Adicione tags relevantes (opcional)
-
-3. **Explore seus sonhos**
-   - Use a busca para encontrar sonhos específicos
-   - Filtre por emoção
-   - Alterne entre visualizações (Cards/Lista/Galeria)
-   - Clique em "✨" para ver um sonho aleatório
-
-4. **Analise seus padrões**
-   - Clique no ícone "📊" para ver o Jornal do Sono
-   - Observe suas emoções recorrentes
-   - Acompanhe a frequência de seus registros
-
-5. **Faça backup**
-   - Clique no ícone "💾"
-   - Escolha entre JSON (backup) ou TXT (leitura)
-
-## 🛠️ Tecnologias
-
-- **HTML5**: Estrutura semântica
-- **CSS3**: Animações, gradientes, backdrop-filter
-- **JavaScript (ES6+)**: Classes, módulos, localStorage
-- **Chart.js**: Visualização de dados
-- **Design Responsivo**: Funciona em desktop e mobile
-
-## 🌟 Dicas de Uso
-
-1. **Registre imediatamente**: Anote seus sonhos assim que acordar
-2. **Seja detalhista**: Quanto mais detalhes, mais rica será sua análise
-3. **Use tags**: Ajudam a encontrar padrões (ex: "família", "voar", "escola")
-4. **Revise regularmente**: Use o botão de sonho aleatório para revisitar memórias
-5. **Observe padrões**: O Jornal do Sono pode revelar insights sobre seu estado emocional
-
-
-
-
+## 🚀 Como Executar
+- Este é um aplicativo standalone (autónomo).
+- Faça o download do ficheiro index.html.
+- Abra-o em qualquer navegador web moderno (Chrome, Firefox, Safari, Edge, etc.).
+- E é tudo! A aplicação funcionará imediatamente.
 
