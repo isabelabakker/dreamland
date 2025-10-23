@@ -1,0 +1,1046 @@
+<!--
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⣶⢶⣶⣄⠀⣠⣴⣾⠿⠿⣷⣄⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⣠⣤⣤⣄⣀⡀⠀⠀⠀⠀⢀⣀⣀⣀⣠⣾⠋⠀⠀⠈⠹⣿⡟⠉⠀⠀⠀⠘⣿⡄⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⣾⠟⠉⠉⠉⠛⠻⢿⣶⠿⠿⠟⠛⠛⠛⣿⠇⠀⢠⣶⣶⣶⣿⣷⣦⣤⣀⣠⣤⣿⣷⣄⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⠀⠀⢸⣿⣼⡿⠁⠀⠀⠙⣿⣯⡁⠀⠈⢿⡇⠀⠀⠀⠀
+⠀⠀⠀⠀⢹⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣄⠀⠀⢙⣿⣷⡀⠀⠀⢠⣿⣿⣿⡆⠀⣾⡇⠀⠀⠀⠀
+⠀⠀⠀⠀⠈⢿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠛⠛⠛⠋⠙⠻⠷⠾⣿⡟⠛⠋⠀⣴⡟⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⣾⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⠷⡶⠿⠛⣿⡄⠀⠀⠀⠀
+⠀⠀⠀⠀⣸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣹⣷⣤⣤⣤⡄
+⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣄⡀⠀⠀⠀⠘⠋⢹⣿⠀⠀⠀⠀
+⠀⣀⣀⣤⣿⣧⣤⡄⠀⠀⠀⢀⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⡷⠀⠀⠀⠀⢠⣼⣿⣤⣤⡤⠀
+⠈⠛⠉⠉⠹⣿⠀⠀⠀⠀⠀⠸⣿⡿⠀⠀⠀⠀⠀⢀⣠⡤⣤⡀⠀⠀⠀⠀⠈⠉⠀⠀⠀⠀⠀⢀⣾⠏⠀⠀⠀⠀
+⠀⠀⠀⣀⣤⣿⣷⠞⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠷⠤⠼⣃⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢛⣿⡿⢶⣤⣄⠀⠀
+⠀⠀⠀⠉⠁⠀⠹⣷⣤⡴⠆⠀⠀⠀⠀⠀⢀⣤⣤⣤⣤⣤⣼⡟⣻⡇⠀⠀⠀⠀⠀⠀⣀⣴⡿⠋⠀⠀⠀⠉⠀⠀
+⠀⠀⠀⠀⢀⣠⡾⠟⠛⠿⣶⣤⣤⣤⣄⣰⣿⣍⣀⡀⠀⠈⠙⠳⠿⢷⣦⣀⣠⣤⣶⣿⣟⠉⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠘⠋⠀⠀⠀⣰⡟⠉⠀⠀⠙⣿⣅⣉⣿⣁⣀⣠⣶⡀⠀⠀⠈⣿⡏⠁⠀⠀⠹⣷⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠠⣿⠀⠀⠀⠀⠀⣿⣧⡽⠉⠛⢉⣉⣘⣷⣄⣰⣿⣿⠇⠀⠀⠀⠀⣿⡆⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⡄⠀⠀⠀⠀⣻⡷⡄⣞⣳⠘⢦⣇⡈⠙⡿⢿⡇⠀⠀⠀⠀⢠⣿⡀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣴⡟⠉⢿⣦⣄⣠⣴⡿⠛⣡⣌⣿⢳⡞⠧⣿⣀⡙⠚⢿⣦⣄⣤⣴⠟⠙⢿⡄⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢰⡿⠀⠀⠀⠈⠉⠉⢹⣧⠈⠳⠞⡉⢻⡷⢦⠸⢭⣧⣤⡿⠋⠉⠉⠀⠀⠀⠈⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢸⣇⠀⠀⠀⠀⠀⠀⠈⣿⣆⠀⢾⣹⠆⠙⢫⣶⣾⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠘⣿⡀⠀⠀⠀⠀⠀⠀⠘⢿⣶⣤⣤⣴⣾⡿⠻⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⢰⡿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠹⣷⣄⠀⠀⠀⠀⠀⢀⣼⣿⣿⡿⠿⠿⣷⣶⣿⣷⡀⠀⠀⠀⠀⠀⢀⣴⡿⠁⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢷⣦⣤⣤⣴⡿⠋⠁⠀⠀⠀⠀⠀⠀⠈⠙⢿⣦⣤⣀⣤⣴⡿⠛⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀               
+ _         _       _        _       _   _                         
+|_|___ ___| |_ ___| |___   | |_ ___| |_| |_ ___ ___   
+| |_ -| .'| . | -_| | .'|  | . | .'| '_| '_| -_|  _|   
+|_|___|__,|___|___|_|__,|  |___|__,|_,_|_,_|___|_|                                                   
+♡‧₊˚🎀༺♡༻🎀˚₊‧♡ ♡‧₊˚🎀♡༻🎀˚₊‧♡ ♡‧₊˚🎀༺♡༻🎀˚₊‧♡ 
+-->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oniria - Arquivo dos Sonhos</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Day.js (Datas) e plugin de localização -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/dayjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/locale/pt-br.min.js"></script>
+    
+    <!-- Chart.js (Gráficos) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons (Ícones) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <style>
+        /* Estilos Globais e Animações de Fundo (Modo Noite) */
+        @keyframes twinkle {
+          0%, 100% { opacity: 0; }
+          50% { opacity: 0.8; }
+        }
+        .star {
+          position: absolute;
+          background: #FFF;
+          border-radius: 50%;
+          animation: twinkle 5s infinite;
+          box-shadow: 0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF;
+        }
+        
+        /* Scrollbar suave */
+        body, .smooth-scroll {
+          scrollbar-width: thin;
+          scrollbar-color: #4a5568 transparent;
+        }
+        .smooth-scroll::-webkit-scrollbar {
+          width: 6px;
+        }
+        .smooth-scroll::-webkit-scrollbar-thumb {
+          background-color: #4a5568; /* slate-600 */
+          border-radius: 3px;
+        }
+        .smooth-scroll::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        
+        /* Oculta views inativas */
+        .view-section {
+            display: none; /* Oculto por padrão */
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .view-section.active {
+            display: block; /* Visível quando ativa */
+        }
+
+        /* Animação de fade-in */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Oculta modais */
+        .modal-overlay {
+            display: none; /* Oculto por padrão */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-box {
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.visible .modal-box {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="bg-slate-900">
+
+    <!-- Container Principal do App (Simula celular) -->
+    <div class="flex flex-col h-[100dvh] max-w-lg mx-auto bg-slate-900 text-gray-200 font-sans shadow-2xl overflow-hidden relative border border-slate-700">
+        
+        <!-- Fundo de Estrelas Animado -->
+        <div class="absolute inset-0 z-0 overflow-hidden">
+            <!-- Estrelas serão geradas pelo JS -->
+            <div id="star-container"></div>
+        </div>
+
+        <!-- Conteúdo Principal (z-index 10) -->
+        <div class="relative z-10 flex flex-col flex-1 h-full">
+            
+            <!-- Header Simples -->
+            <header class="flex items-center justify-between p-4 bg-slate-900/50 backdrop-blur-sm border-b border-slate-700">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="moon" class="text-violet-300"></i>
+                    <h1 class="text-xl font-semibold text-gray-100">Oniria</h1>
+                </div>
+                <!-- ID do usuário removido, pois agora é armazenamento local -->
+            </header>
+
+            <!-- Área de Conteúdo (com scroll) -->
+            <main class="flex-1 overflow-y-auto smooth-scroll">
+                
+                <!-- View: Loading -->
+                <section id="loading-view" class="view-section active p-10">
+                    <div class="flex items-center justify-center h-full w-full">
+                        <div class="w-12 h-12 border-4 border-t-violet-400 border-r-slate-700 border-b-slate-700 border-l-slate-700 rounded-full animate-spin"></div>
+                    </div>
+                </section>
+
+                <!-- View: Lista de Sonhos -->
+                <section id="list-view" class="view-section p-4 space-y-4">
+                    <h2 class="text-2xl font-light text-gray-200 mb-4">Seus Sonhos Recentes</h2>
+                    <div id="dream-list-container" class="space-y-4">
+                        <!-- Cards de sonho serão injetados aqui -->
+                    </div>
+                    <div id="empty-list-message" class="text-center text-slate-400 py-10 hidden">
+                        <p>Nenhum sonho registrado ainda.</p>
+                        <button id="add-first-dream-btn" class="mt-4 px-4 py-2 bg-violet-600 text-white rounded-lg shadow-md hover:bg-violet-500 transition-colors">
+                            Registrar primeiro sonho
+                        </button>
+                    </div>
+                </section>
+
+                <!-- View: Formulário (Adicionar/Editar) -->
+                <section id="form-view" class="view-section p-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <button class="nav-back-btn text-slate-400 hover:text-white">
+                            <i data-lucide="arrow-left"></i>
+                        </button>
+                        <h2 id="form-title" class="text-2xl font-light text-gray-200">Novo Sonho</h2>
+                        <div class="w-6"></div> <!-- Espaçador -->
+                    </div>
+                    
+                    <form id="dream-form" class="space-y-5">
+                        <input type="hidden" id="dream-id-input" name="id">
+                        
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-slate-300 mb-1">Título</label>
+                            <input type="text" id="title" name="title" placeholder="Dê um nome ao seu sonho" required class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                        </div>
+                        
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-slate-300 mb-1">Descrição</label>
+                            <textarea id="description" name="description" rows="5" placeholder="Descreva o que aconteceu..." required class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all"></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="date" class="block text-sm font-medium text-slate-300 mb-1">Data</label>
+                                <input type="date" id="date" name="date" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                            </div>
+                            <div>
+                                <label for="emotion" class="block text-sm font-medium text-slate-300 mb-1">Emoção Principal</label>
+                                <select id="emotion" name="emotion" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                                    <!-- Opções de emoção serão injetadas aqui -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="symbol" class="block text-sm font-medium text-slate-300 mb-1">Símbolo (Emoji)</label>
+                                <input type="text" id="symbol" name="symbol" placeholder="🖼️" maxLength="2" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                            </div>
+                            <div>
+                                <label for="tags" class="block text-sm font-medium text-slate-300 mb-1">Tags (separadas por vírgula)</label>
+                                <input type="text" id="tags" name="tags" placeholder="medo, voar, água" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full flex justify-center items-center gap-2 mt-6 px-4 py-3 bg-violet-600 text-white rounded-lg shadow-md hover:bg-violet-500 transition-colors font-semibold">
+                            <i data-lucide="save" class="w-5 h-5"></i>
+                            Salvar Sonho
+                        </button>
+                    </form>
+                </section>
+
+                <!-- View: Detalhe do Sonho -->
+                <section id="detail-view" class="view-section p-4">
+                    <button class="nav-back-btn absolute top-4 left-4 text-slate-400 hover:text-white z-20">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
+
+                    <div id="detail-header" class="relative p-5 rounded-xl shadow-lg -mx-4 -mt-4 border-b backdrop-blur-sm">
+                        <div class="flex justify-between items-start pt-10">
+                            <div class="flex-1">
+                                <h2 id="detail-title" class="text-3xl font-medium text-gray-100"></h2>
+                                <p id="detail-date" class="text-md text-slate-400 mt-2"></p>
+                            </div>
+                            <span id="detail-symbol" class="text-5xl ml-4 opacity-80"></span>
+                        </div>
+                    </div>
+
+                    <div class="py-6 space-y-4">
+                        <p id="detail-description" class="text-gray-200 whitespace-pre-wrap leading-relaxed"></p>
+                        <div id="detail-tags-container" class="flex flex-wrap gap-2 pt-4 border-t border-slate-700">
+                            <!-- Tags e emoção serão injetadas aqui -->
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col space-y-3 mt-6">
+                        <button id="analyze-btn" class="w-full flex justify-center items-center gap-2 px-4 py-3 bg-violet-600 text-white rounded-lg shadow-md hover:bg-violet-500 transition-colors font-semibold">
+                            <i data-lucide="wand-2" class="w-5 h-5"></i>
+                            Análise Poética
+                        </button>
+                        <button id="edit-btn" class="w-full px-4 py-2 bg-slate-700 text-slate-200 rounded-lg hover:bg-slate-600 transition-colors">
+                            Editar
+                        </button>
+                        <button id="delete-btn" class="w-full px-4 py-2 bg-transparent text-red-400 rounded-lg hover:bg-red-900/30 transition-colors">
+                            Apagar Sonho
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- View: Diário (Gráfico) -->
+                <section id="journal-view" class="view-section p-4">
+                    <h2 class="text-2xl font-light text-gray-200 mb-6">Diário do Sono</h2>
+                    <div class="p-4 bg-slate-800/50 rounded-lg backdrop-blur-sm border border-slate-700">
+                        <canvas id="emotion-chart"></canvas>
+                        <p id="journal-empty-msg" class="text-center text-slate-400 py-10 hidden">
+                            Sem dados suficientes para o gráfico.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- View: Explorar -->
+                <section id="explore-view" class="view-section p-4 space-y-6">
+                    <h2 class="text-2xl font-light text-gray-200">Explorar Sonhos</h2>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="random-dream-btn" class="flex-1 flex justify-center items-center gap-2 px-4 py-3 bg-slate-700 text-white rounded-lg shadow-md hover:bg-slate-600 transition-colors">
+                            <i data-lucide="shuffle" class="w-5 h-5"></i>
+                            Sonho Aleatório
+                        </button>
+                        <button id="export-btn" class="flex-1 flex justify-center items-center gap-2 px-4 py-3 bg-slate-700 text-white rounded-lg shadow-md hover:bg-slate-600 transition-colors">
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                            Exportar (.json)
+                        </button>
+                    </div>
+
+                    <div class="space-y-4 p-4 bg-slate-800/50 rounded-lg backdrop-blur-sm border border-slate-700">
+                        <h3 class="text-lg font-medium text-slate-200">Filtrar</h3>
+                        
+                        <div>
+                            <label for="filter-keyword" class="block text-sm font-medium text-slate-300 mb-1">Palavra-chave</label>
+                            <input type="text" id="filter-keyword" name="keyword" placeholder="Ex: voar, escuro..." class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                        </div>
+                        <div>
+                            <label for="filter-tag" class="block text-sm font-medium text-slate-300 mb-1">Tag</label>
+                            <input type="text" id="filter-tag" name="tag" placeholder="Ex: família" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                        </div>
+                        <div>
+                            <label for="filter-emotion" class="block text-sm font-medium text-slate-300 mb-1">Emoção</label>
+                            <select id="filter-emotion" name="emotion" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                                <option value="" class="bg-slate-800 text-white">Todas</option>
+                                <!-- Opções de emoção serão injetadas aqui -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h3 id="filter-results-count" class="text-lg text-slate-300">Resultados (0)</h3>
+                        <div id="filter-results-container" class="space-y-3">
+                            <!-- Resultados filtrados serão injetados aqui -->
+                        </div>
+                        <p id="filter-empty-msg" class="text-center text-slate-400 py-5 hidden">
+                            Nenhum sonho encontrado.
+                        </p>
+                    </div>
+                </section>
+
+            </main>
+
+            <!-- Navegação Inferior -->
+            <nav class="relative z-20 grid grid-cols-4 items-center p-2 bg-slate-800/70 backdrop-blur-sm border-t border-slate-700">
+                <button data-view="list" class="nav-btn flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 text-violet-300">
+                    <i data-lucide="home"></i>
+                    <span class="text-xs mt-1">Início</span>
+                </button>
+                <button data-view="journal" class="nav-btn flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 text-slate-400 hover:text-slate-200">
+                    <i data-lucide="bar-chart-3"></i>
+                    <span class="text-xs mt-1">Diário</span>
+                </button>
+                <button data-view="explore" class="nav-btn flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 text-slate-400 hover:text-slate-200">
+                    <i data-lucide="search"></i>
+                    <span class="text-xs mt-1">Explorar</span>
+                </button>
+                <button id="add-new-btn-nav" class="flex flex-col items-center justify-center p-2 rounded-lg text-slate-400 hover:text-slate-200" title="Adicionar novo sonho">
+                    <div class="flex items-center justify-center w-12 h-12 bg-violet-600 rounded-full shadow-lg hover:bg-violet-500 transition-all duration-200 text-white -translate-y-6 border-4 border-slate-800">
+                        <i data-lucide="plus" class="w-7 h-7"></i>
+                    </div>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Modal: Análise Poética -->
+        <div id="analysis-modal" class="modal-overlay absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+            <div class="modal-box relative w-full max-w-sm p-6 bg-slate-800 border border-violet-500 rounded-xl shadow-2xl">
+                <button id="analysis-modal-close" class="absolute top-3 right-3 text-slate-500 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div class="flex flex-col items-center text-center">
+                    <i data-lucide="wand-2" class="w-8 h-8 text-violet-300 mb-4"></i>
+                    <h3 class="text-xl font-medium text-gray-100 mb-4">Interpretação Poética</h3>
+                    
+                    <div id="analysis-loading" class="py-6 hidden">
+                        <div class="w-10 h-10 border-4 border-t-violet-400 border-r-slate-700 border-b-slate-700 border-l-slate-700 rounded-full animate-spin"></div>
+                        <p class="text-slate-400 mt-3 animate-pulse">Oniria está consultando o éter...</p>
+                    </div>
+                    
+                    <p id="analysis-error" class="text-red-400 hidden"></p>
+                    <p id="analysis-text" class="text-lg text-gray-300 italic leading-relaxed"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal: Confirmação de Exclusão -->
+        <div id="delete-modal" class="modal-overlay absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+            <div class="modal-box relative w-full max-w-sm p-6 bg-slate-800 border border-red-500 rounded-xl shadow-2xl">
+                <div class="flex flex-col items-center text-center">
+                    <i data-lucide="trash-2" class="w-8 h-8 text-red-400 mb-4"></i>
+                    <h3 class="text-xl font-medium text-gray-100 mb-2">Apagar Sonho</h3>
+                    <p class="text-slate-300 mb-6">Tem certeza que deseja apagar este sonho? Esta ação é irreversível.</p>
+                    <div class="grid grid-cols-2 gap-3 w-full">
+                        <button id="delete-modal-cancel" class="w-full px-4 py-2 bg-slate-700 text-slate-200 rounded-lg hover:bg-slate-600 transition-colors">
+                            Cancelar
+                        </button>
+                        <button id="delete-modal-confirm" class="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors">
+                            Apagar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script principal do App -->
+    <script type="module">
+        // --- Configuração ---
+        // Remoção de toda a configuração do Firebase.
+        
+        // --- Constantes de Estilo e Opções ---
+        const emotionConfig = {
+          default: { color: 'border-slate-600', bg: 'bg-slate-800/30', icon: '😶' },
+          paz: { color: 'border-blue-400', bg: 'bg-blue-900/30', icon: '😌' },
+          alegria: { color: 'border-yellow-300', bg: 'bg-yellow-800/30', icon: '😄' },
+          medo: { color: 'border-red-400', bg: 'bg-red-900/30', icon: '😨' },
+          saudade: { color: 'border-gray-400', bg: 'bg-gray-700/30', icon: '🥺' },
+          confusao: { color: 'border-purple-400', bg: 'bg-purple-900/30', icon: '😵‍💫' },
+        };
+        const emotionOptions = ['paz', 'alegria', 'medo', 'saudade', 'confusao'];
+
+        // --- Estado Global do App ---
+        let currentView = 'loading';
+        let dreams = [];
+        let selectedDreamId = null; // Usado para exclusão, edição, etc.
+        let db; // Variável para a instância do IndexedDB
+        let emotionChartInstance = null; // Instância do gráfico
+
+        // --- Seletores de DOM ---
+        const views = {
+            loading: document.getElementById('loading-view'),
+            list: document.getElementById('list-view'),
+            form: document.getElementById('form-view'),
+            detail: document.getElementById('detail-view'),
+            journal: document.getElementById('journal-view'),
+            explore: document.getElementById('explore-view'),
+        };
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const addNewNavButton = document.getElementById('add-new-btn-nav');
+        const addFirstDreamButton = document.getElementById('add-first-dream-btn');
+        const dreamListContainer = document.getElementById('dream-list-container');
+        const emptyListMessage = document.getElementById('empty-list-message');
+        const dreamForm = document.getElementById('dream-form');
+        const formTitle = document.getElementById('form-title');
+        const dreamIdInput = document.getElementById('dream-id-input');
+        const backButtons = document.querySelectorAll('.nav-back-btn');
+        // Seletor de ID de usuário removido
+        
+        // Seletores de Detalhe
+        const detailHeader = document.getElementById('detail-header');
+        const detailTitle = document.getElementById('detail-title');
+        const detailDate = document.getElementById('detail-date');
+        const detailSymbol = document.getElementById('detail-symbol');
+        const detailDescription = document.getElementById('detail-description');
+        const detailTagsContainer = document.getElementById('detail-tags-container');
+        const analyzeButton = document.getElementById('analyze-btn');
+        const editButton = document.getElementById('edit-btn');
+        const deleteButton = document.getElementById('delete-btn');
+
+        // Seletores do Diário
+        const emotionChartCanvas = document.getElementById('emotion-chart').getContext('2d');
+        const journalEmptyMsg = document.getElementById('journal-empty-msg');
+        
+        // Seletores de Exploração
+        const randomDreamButton = document.getElementById('random-dream-btn');
+        const exportButton = document.getElementById('export-btn');
+        const filterKeyword = document.getElementById('filter-keyword');
+        const filterTag = document.getElementById('filter-tag');
+        const filterEmotion = document.getElementById('filter-emotion');
+        const filterResultsCount = document.getElementById('filter-results-count');
+        const filterResultsContainer = document.getElementById('filter-results-container');
+        const filterEmptyMsg = document.getElementById('filter-empty-msg');
+        
+        // Seletores do Modal de Análise
+        const analysisModal = document.getElementById('analysis-modal');
+        const analysisModalClose = document.getElementById('analysis-modal-close');
+        const analysisLoading = document.getElementById('analysis-loading');
+        const analysisError = document.getElementById('analysis-error');
+        const analysisText = document.getElementById('analysis-text');
+
+        // Seletores do Modal de Exclusão
+        const deleteModal = document.getElementById('delete-modal');
+        const deleteModalCancel = document.getElementById('delete-modal-cancel');
+        const deleteModalConfirm = document.getElementById('delete-modal-confirm');
+
+        // --- Inicialização ---
+        document.addEventListener('DOMContentLoaded', initApp);
+
+        function initApp() {
+            dayjs.locale('pt-br'); // Configura localização do Day.js
+            setupEventListeners();
+            populateSelectOptions();
+            generateStars();
+            setupDatabase(); // Substitui setupAuthentication
+            navigateTo('loading'); // Começa na tela de loading - isso chamará createIcons
+            // lucide.createIcons(); // Removido daqui
+        }
+
+        // --- Configuração do IndexedDB ---
+        function setupDatabase() {
+            const request = window.indexedDB.open("OniriaDB", 1);
+
+            request.onerror = (event) => {
+                console.error("Erro ao abrir o IndexedDB:", event);
+                navigateTo('list');
+                emptyListMessage.innerHTML = "<p class='text-red-400'>Erro ao carregar o banco de dados local.</p>";
+                emptyListMessage.classList.remove('hidden');
+            };
+
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
+                // Cria a "tabela" (objectStore) para os sonhos
+                const store = db.createObjectStore("dreams", { keyPath: "id", autoIncrement: true });
+                // Cria índices para facilitar buscas futuras (embora não usados para filtro na v1)
+                store.createIndex("date", "date", { unique: false });
+                store.createIndex("emotion", "emotion", { unique: false });
+            };
+
+            request.onsuccess = (event) => {
+                db = event.target.result;
+                console.log("Banco de dados IndexedDB aberto com sucesso.");
+                loadDreamsFromDB(); // Carrega os sonhos após o DB estar pronto
+            };
+        }
+
+        // --- Navegação ---
+        function navigateTo(viewName) {
+            currentView = viewName;
+            // Esconde todas as views
+            Object.values(views).forEach(view => view.classList.remove('active'));
+            // Mostra a view ativa
+            if (views[viewName]) {
+                views[viewName].classList.add('active');
+            }
+            
+            // Atualiza estado ativo dos botões de navegação
+            navButtons.forEach(btn => {
+                if (btn.dataset.view === viewName) {
+                    btn.classList.remove('text-slate-400', 'hover:text-slate-200');
+                    btn.classList.add('text-violet-300');
+                } else {
+                    btn.classList.remove('text-violet-300');
+                    btn.classList.add('text-slate-400', 'hover:text-slate-200');
+                }
+            });
+
+            // Lógica específica ao entrar na view
+            if (viewName === 'journal') {
+                renderJournalView();
+            }
+            if (viewName === 'explore') {
+                renderExploreView();
+            }
+
+            // Tenta renderizar ícones toda vez que a view muda
+            try {
+                if (typeof lucide !== 'undefined' && lucide) {
+                    lucide.createIcons();
+                } else {
+                    console.warn("Lucide (ícones) não carregado.");
+                }
+            } catch (e) {
+                console.error("Erro ao renderizar ícones:", e);
+            }
+        }
+        
+        // --- Lógica do IndexedDB (Sonhos) ---
+        function loadDreamsFromDB() {
+            if (!db) return;
+
+            const transaction = db.transaction(["dreams"], "readonly");
+            const store = transaction.objectStore("dreams");
+            const request = store.getAll();
+
+            request.onsuccess = (event) => {
+                let allDreams = event.target.result;
+                // Ordena por data (mais recente primeiro)
+                allDreams.sort((a, b) => new Date(b.date) - new Date(a.date));
+                dreams = allDreams; // Atualiza o estado global
+                
+                renderDreamList();
+                if (currentView === 'loading') {
+                    navigateTo('list');
+                }
+            };
+
+            request.onerror = (event) => {
+                console.error("Erro ao carregar sonhos do DB:", event);
+                navigateTo('list');
+                emptyListMessage.textContent = "Erro ao carregar sonhos.";
+                emptyListMessage.classList.remove('hidden');
+            };
+        }
+        
+        async function handleSaveDream(event) {
+            event.preventDefault();
+            if (!db) return;
+
+            const formData = new FormData(dreamForm);
+            const dreamData = Object.fromEntries(formData.entries());
+
+            if (!dreamData.title || !dreamData.description) {
+                console.warn("Título e Descrição são obrigatórios.");
+                return;
+            }
+
+            views.loading.classList.add('active'); // Mostra loading temporário
+
+            const transaction = db.transaction(["dreams"], "readwrite");
+            const store = transaction.objectStore("dreams");
+            
+            // Prepara o objeto para salvar
+            const dataToSave = {
+                title: dreamData.title,
+                description: dreamData.description,
+                tags: dreamData.tags,
+                emotion: dreamData.emotion,
+                symbol: dreamData.symbol,
+                date: new Date(dreamData.date || Date.now()).toISOString() // Armazena como ISO string
+            };
+
+            const id = dreamData.id ? parseInt(dreamData.id) : null;
+            let request;
+
+            if (id) {
+                // Atualizar (Put)
+                dataToSave.id = id; // Adiciona o ID numérico de volta
+                request = store.put(dataToSave);
+            } else {
+                // Adicionar (Add)
+                // O ID será auto-incrementado
+                request = store.add(dataToSave);
+            }
+
+            transaction.oncomplete = () => {
+                console.log("Sonho salvo com sucesso.");
+                dreamForm.reset();
+                loadDreamsFromDB(); // Recarrega a lista
+                navigateTo('list');
+            };
+
+            transaction.onerror = (event) => {
+                console.error("Erro ao salvar sonho:", event);
+                views.loading.classList.remove('active'); // Esconde loading em caso de erro
+            };
+        }
+        
+        function handleDeleteDream(dreamId) {
+            selectedDreamId = dreamId; // Armazena o ID (numérico) para o modal
+            deleteModal.classList.add('visible');
+        }
+
+        async function confirmDelete() {
+            if (!db || selectedDreamId === null) return;
+
+            const idToDelete = selectedDreamId; // Já deve ser um número
+            deleteModal.classList.remove('visible');
+            navigateTo('loading'); // Mostra loading
+
+            const transaction = db.transaction(["dreams"], "readwrite");
+            const store = transaction.objectStore("dreams");
+            const request = store.delete(idToDelete);
+
+            transaction.oncomplete = () => {
+                console.log("Sonho apagado com sucesso.");
+                selectedDreamId = null;
+                loadDreamsFromDB(); // Recarrega a lista
+                navigateTo('list'); // Volta para a lista
+            };
+            
+            transaction.onerror = (event) => {
+                console.error("Erro ao apagar sonho:", event);
+                navigateTo('detail'); // Volta para o detalhe se der erro
+            };
+        }
+
+
+        // --- Renderização Dinâmica ---
+        
+        function renderDreamList() {
+            dreamListContainer.innerHTML = ''; // Limpa a lista
+            if (dreams.length === 0) {
+                emptyListMessage.classList.remove('hidden');
+            } else {
+                emptyListMessage.classList.add('hidden');
+                dreams.forEach((dream, index) => {
+                    const card = createDreamCard(dream, index);
+                    dreamListContainer.appendChild(card);
+                });
+            }
+            // Não é mais necessário chamar createIcons dinamicamente aqui
+        }
+        
+        function createDreamCard(dream, index) {
+            const config = emotionConfig[dream.emotion] || emotionConfig.default;
+            
+            const card = document.createElement('div');
+            card.className = `relative p-4 rounded-xl shadow-lg cursor-pointer transition-all duration-300 border ${config.color} ${config.bg} backdrop-blur-sm hover:shadow-violet-400/20 hover:border-violet-400`;
+            card.style.animationDelay = `${index * 0.05}s`; // Efeito cascata
+            card.dataset.id = dream.id; // ID numérico do IDB
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-medium text-gray-100">${escapeHTML(dream.title)}</h3>
+                        <p class="text-sm text-slate-400 mt-1">${dayjs(dream.date).format('DD [de] MMMM, YYYY')}</p>
+                    </div>
+                    <span class="text-3xl ml-4 opacity-80">${escapeHTML(dream.symbol) || config.icon}</span>
+                </div>
+                <p class="mt-3 text-sm text-gray-300 line-clamp-2">${escapeHTML(dream.description)}</p>
+                <div class="mt-3 flex flex-wrap gap-2">
+                    ${dream.tags?.split(',').map(tag => tag.trim()).filter(Boolean).map(tag => `
+                        <span class="px-2 py-0.5 bg-slate-700 text-slate-300 rounded-full text-xs">
+                            ${escapeHTML(tag)}
+                        </span>
+                    `).join('') || ''}
+                </div>
+            `;
+            
+            // Passa o ID numérico diretamente
+            card.addEventListener('click', () => showDreamDetail(dream.id));
+            return card;
+        }
+
+        function showDreamDetail(dreamId) {
+            // dreamId é um número
+            const dream = dreams.find(d => d.id === dreamId);
+            if (!dream) return;
+            
+            selectedDreamId = dream.id; // Armazena o ID numérico
+            const config = emotionConfig[dream.emotion] || emotionConfig.default;
+
+            // Limpa classes antigas
+            detailHeader.className = `relative p-5 rounded-xl shadow-lg -mx-4 -mt-4 border-b backdrop-blur-sm ${config.color} ${config.bg}`;
+            
+            detailTitle.textContent = dream.title;
+            detailDate.textContent = dayjs(dream.date).format('dddd, DD [de] MMMM [de] YYYY');
+            detailSymbol.textContent = dream.symbol || config.icon;
+            detailDescription.textContent = dream.description;
+            
+            // Tags e Emoção
+            detailTagsContainer.innerHTML = `
+                <span class="px-3 py-1 rounded-full text-sm font-medium border ${config.color} ${config.bg.replace('/30', '/50')}">
+                    ${escapeHTML(dream.emotion)}
+                </span>
+                ${dream.tags?.split(',').map(tag => tag.trim()).filter(Boolean).map(tag => `
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 rounded-full text-sm">
+                        ${escapeHTML(tag)}
+                    </span>
+                `).join('') || ''}
+            `;
+            
+            navigateTo('detail');
+        }
+        
+        function showDreamForm(dreamId = null) {
+            // dreamId é um número ou nulo
+            if (dreamId) {
+                const dream = dreams.find(d => d.id === dreamId);
+                if (!dream) return;
+                
+                formTitle.textContent = 'Editar Sonho';
+                dreamIdInput.value = dream.id; // Salva o ID no input hidden
+                dreamForm.elements['title'].value = dream.title;
+                dreamForm.elements['description'].value = dream.description;
+                dreamForm.elements['date'].value = dayjs(dream.date).format('YYYY-MM-DD');
+                dreamForm.elements['tags'].value = dream.tags || '';
+                dreamForm.elements['emotion'].value = dream.emotion || 'paz';
+                dreamForm.elements['symbol'].value = dream.symbol || '';
+            } else {
+                formTitle.textContent = 'Novo Sonho';
+                dreamForm.reset();
+                dreamIdInput.value = ''; // Limpa o ID
+                dreamForm.elements['date'].value = dayjs().format('YYYY-MM-DD');
+                dreamForm.elements['emotion'].value = 'paz';
+                dreamForm.elements['symbol'].value = emotionConfig['paz'].icon;
+            }
+            navigateTo('form');
+        }
+        
+        function renderJournalView() {
+            if (emotionChartInstance) {
+                emotionChartInstance.destroy();
+            }
+
+            if (dreams.length === 0) {
+                journalEmptyMsg.classList.remove('hidden');
+                document.getElementById('emotion-chart').style.display = 'none'; // Esconde canvas
+                return;
+            }
+            
+            journalEmptyMsg.classList.add('hidden');
+            document.getElementById('emotion-chart').style.display = 'block'; // Mostra canvas
+
+            const emotionCounts = dreams.reduce((acc, dream) => {
+              const emotion = dream.emotion || 'default';
+              acc[emotion] = (acc[emotion] || 0) + 1;
+              return acc;
+            }, {});
+            
+            const labels = Object.keys(emotionCounts);
+            const data = Object.values(emotionCounts);
+
+            const getChartColor = (label, type) => {
+                const color = (emotionConfig[label] || emotionConfig.default).color;
+                const opacity = type === 'bg' ? '0.6' : '1';
+                if (color.includes('blue')) return `rgba(96, 165, 250, ${opacity})`; // blue-400
+                if (color.includes('yellow')) return `rgba(252, 211, 77, ${opacity})`; // yellow-300
+                if (color.includes('red')) return `rgba(248, 113, 113, ${opacity})`; // red-400
+                if (color.includes('gray')) return `rgba(156, 163, 175, ${opacity})`; // gray-400
+                if (color.includes('purple')) return `rgba(192, 132, 252, ${opacity})`; // purple-400
+                return `rgba(100, 116, 139, ${opacity})`; // slate-500
+            };
+
+            emotionChartInstance = new Chart(emotionChartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Frequência de Emoções',
+                        data: data,
+                        backgroundColor: labels.map(l => getChartColor(l, 'bg')),
+                        borderColor: labels.map(l => getChartColor(l, 'border')),
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Emoções Recorrentes', color: '#e2e8f0' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#94a3b8', stepSize: 1 },
+                            grid: { color: '#334155' }
+                        },
+                        x: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: '#334155' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderExploreView() {
+            // Preenche filtros e renderiza resultados
+            updateFilterResults();
+        }
+
+        function updateFilterResults() {
+            const keyword = filterKeyword.value.toLowerCase();
+            const tag = filterTag.value.toLowerCase();
+            const emotion = filterEmotion.value;
+
+            const filteredDreams = dreams.filter(dream => {
+                const keywordMatch = keyword ? 
+                    (dream.title.toLowerCase().includes(keyword) || 
+                     dream.description.toLowerCase().includes(keyword)) : true;
+                
+                const tagMatch = tag ? 
+                    (dream.tags && dream.tags.toLowerCase().includes(tag)) : true;
+                
+                const emotionMatch = emotion ? 
+                    (dream.emotion === emotion) : true;
+                    
+                return keywordMatch && tagMatch && emotionMatch;
+            });
+
+            filterResultsCount.textContent = `Resultados (${filteredDreams.length})`;
+            filterResultsContainer.innerHTML = '';
+            
+            if (filteredDreams.length > 0) {
+                filterEmptyMsg.classList.add('hidden');
+                filteredDreams.forEach(dream => {
+                    const div = document.createElement('div');
+                    div.className = 'p-3 bg-slate-800 rounded-lg cursor-pointer hover:bg-slate-700 transition-colors';
+                    div.innerHTML = `
+                        <h4 class="font-medium text-gray-200 truncate">${escapeHTML(dream.title)}</h4>
+                        <p class="text-sm text-slate-400">${dayjs(dream.date).format('DD/MM/YYYY')}</p>
+                    `;
+                    div.addEventListener('click', () => showDreamDetail(dream.id));
+                    filterResultsContainer.appendChild(div);
+                });
+            } else {
+                filterEmptyMsg.classList.remove('hidden');
+            }
+        }
+        
+        // --- Análise Poética (API Gemini) ---
+        // Esta função permanece a mesma, pois não dependia do Firebase.
+        async function handleGetAnalysis() {
+            const dream = dreams.find(d => d.id === selectedDreamId);
+            if (!dream || !dream.description) return;
+
+            analysisModal.classList.add('visible');
+            analysisLoading.classList.remove('hidden');
+            analysisError.classList.add('hidden');
+            analysisText.classList.add('hidden');
+            analysisText.textContent = '';
+            analysisError.textContent = '';
+
+            const systemPrompt = "Você é Oniria, um poeta místico e intérprete de sonhos. Você nunca dá conselhos diretos ou interpretações literais. Em vez disso, responde em linguagem simbólica, poética, gentil e curta (máximo 3 frases), interpretando o sonho fornecido. Fale em português do Brasil. Comece com 'Este sonho sussurra sobre...'.";
+            
+            const apiKey = ""; // Deixe em branco
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: dream.description }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+            
+            try {
+                // Implementando retry simples com backoff
+                let response;
+                for (let i = 0; i < 3; i++) {
+                    response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (response.ok) break;
+                    if (response.status === 429 || response.status >= 500) {
+                        await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+                    } else {
+                        break;
+                    }
+                }
+
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (text) {
+                    analysisText.textContent = `"${text}"`;
+                    analysisText.classList.remove('hidden');
+                } else {
+                    throw new Error("Resposta da API inválida.");
+                }
+            } catch (error) {
+                console.error("Erro na análise poética:", error);
+                analysisError.textContent = "Não foi possível interpretar este sonho agora. Tente mais tarde.";
+                analysisError.classList.remove('hidden');
+            } finally {
+                analysisLoading.classList.add('hidden');
+            }
+        }
+
+        // --- Outras Funções ---
+        
+        function handleExport() {
+            try {
+                // Exporta os sonhos do estado global 'dreams'
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dreams, null, 2));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", `oniria_backup_${dayjs().format('YYYY-MM-DD')}.json`);
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+            } catch (error) {
+                console.error("Erro ao exportar:", error);
+                // Não usar alert
+            }
+        }
+
+        function handleRandomDream() {
+            if (dreams.length === 0) return;
+            const randomDream = dreams[Math.floor(Math.random() * dreams.length)];
+            showDreamDetail(randomDream.id);
+        }
+
+        function populateSelectOptions() {
+            const emotionSelect = document.getElementById('emotion');
+            const filterEmotionSelect = document.getElementById('filter-emotion');
+            
+            emotionOptions.forEach(e => {
+                const optionHTML = `<option value="${e}" class="bg-slate-800 text-white">${e.charAt(0).toUpperCase() + e.slice(1)}</option>`;
+                emotionSelect.innerHTML += optionHTML;
+                filterEmotionSelect.innerHTML += optionHTML;
+            });
+        }
+        
+        function generateStars() {
+            const container = document.getElementById('star-container');
+            let starsHTML = '';
+            for (let i = 0; i < 50; i++) {
+                const style = `
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    width: ${Math.random() * 2 + 1}px;
+                    height: ${Math.random() * 2 + 1}px;
+                    animation-delay: ${Math.random() * 5}s;
+                    animation-duration: ${Math.random() * 5 + 3}s;
+                `;
+                starsHTML += `<div class="star" style="${style}"></div>`;
+            }
+            container.innerHTML = starsHTML;
+        }
+
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return str.toString()
+                 .replace(/&/g, '&amp;')
+                 .replace(/</g, '&lt;')
+                 .replace(/>/g, '&gt;')
+                 .replace(/"/g, '&quot;')
+                 .replace(/'/g, '&#039;');
+        }
+        
+        // --- Event Listeners ---
+        function setupEventListeners() {
+            // Navegação principal
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', () => navigateTo(btn.dataset.view));
+            });
+            
+            // Botões "Adicionar Novo"
+            addNewNavButton.addEventListener('click', () => showDreamForm(null));
+            addFirstDreamButton.addEventListener('click', () => showDreamForm(null));
+            
+            // Botões "Voltar"
+            backButtons.forEach(btn => {
+                btn.addEventListener('click', () => navigateTo('list'));
+            });
+
+            // Formulário
+            dreamForm.addEventListener('submit', handleSaveDream);
+            // Atualiza emoji ao mudar emoção
+            dreamForm.elements['emotion'].addEventListener('change', (e) => {
+                const currentSymbol = dreamForm.elements['symbol'].value;
+                const newIcon = emotionConfig[e.target.value]?.icon || '🤔';
+                
+                // Só atualiza se o campo estiver vazio ou for o ícone de uma emoção anterior
+                const isOldIcon = Object.values(emotionConfig).some(c => c.icon === currentSymbol);
+                if (!currentSymbol || isOldIcon) {
+                    dreamForm.elements['symbol'].value = newIcon;
+                }
+            });
+
+            // Botões de Detalhe
+            analyzeButton.addEventListener('click', handleGetAnalysis);
+            editButton.addEventListener('click', () => showDreamForm(selectedDreamId));
+            deleteButton.addEventListener('click', () => handleDeleteDream(selectedDreamId));
+
+            // Botões de Exploração
+            randomDreamButton.addEventListener('click', handleRandomDream);
+            exportButton.addEventListener('click', handleExport);
+            [filterKeyword, filterTag, filterEmotion].forEach(input => {
+                input.addEventListener('input', updateFilterResults);
+            });
+
+            // Modal de Análise
+            analysisModalClose.addEventListener('click', () => analysisModal.classList.remove('visible'));
+            analysisModal.addEventListener('click', (e) => {
+                if (e.target === analysisModal) analysisModal.classList.remove('visible');
+            });
+            
+            // Modal de Exclusão
+            deleteModalCancel.addEventListener('click', () => deleteModal.classList.remove('visible'));
+            deleteModalConfirm.addEventListener('click', confirmDelete);
+            deleteModal.addEventListener('click', (e) => {
+                if (e.target === deleteModal) deleteModal.classList.remove('visible');
+            });
+        }
+
+    </script>
+</body>
+</html>
