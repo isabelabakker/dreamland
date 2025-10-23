@@ -1,7 +1,5 @@
 # 🌙 Oniria - Arquivo dos Sonhos
-Um diário de sonhos poético e minimalista, focado na introspecção.
 
-## 💭 Conceito
 Oniria é um aplicativo web mobile-first desenhado para o registo de sonhos. Esta aplicação funciona inteiramente offline, guardando todos os seus dados de forma segura no localStorage do seu navegador.
 
 ## ✨ Funcionalidades Principais
@@ -25,6 +23,7 @@ Oniria é um aplicativo web mobile-first desenhado para o registo de sonhos. Est
 - Faça o download do ficheiro index.html.
 - Abra-o em qualquer navegador web moderno (Chrome, Firefox, Safari, Edge, etc.).
 - E é tudo! A aplicação funcionará imediatamente.
+
 
 
 
