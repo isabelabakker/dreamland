@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oniria - Arquivo dos Sonhos</title>
+    <meta name="description" content="Oniria - Um diário digital para registrar e interpretar seus sonhos">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Day.js (Datas) e plugin de localização -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/dayjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/locale/pt-br.min.js"></script>
+    
+    <!-- Chart.js (Gráficos) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons (Ícones) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- CSS Customizado -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate-900">
+
+    <div class="flex flex-col h-[100dvh] max-w-lg mx-auto bg-slate-900 text-gray-200 font-sans shadow-2xl overflow-hidden relative border border-slate-700">
+        
+        <!-- Fundo de Estrelas -->
+        <div class="absolute inset-0 z-0 overflow-hidden">
+            <div id="star-container"></div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="relative z-10 flex flex-col flex-1 h-full">
+            
+            <!-- Header -->
+            <header class="flex items-center justify-between p-4 bg-slate-900/50 backdrop-blur-sm border-b border-slate-700">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="moon" class="text-violet-300"></i>
+                    <h1 class="text-xl font-semibold text-gray-100">Oniria</h1>
+                </div>
+                <div class="text-xs text-slate-400">
+                    v1.0
+                </div>
+            </header>
+
+            <!-- Área de Conteúdo -->
+            <main class="flex-1 overflow-y-auto">
+                
+                <!-- Loading -->
+                <section id="loading-view" class="view-section active p-10">
+                    <div class="flex items-center justify-center h-full w-full">
+                        <div class="w-12 h-12 border-4 border-t-violet-400 border-r-slate-700 border-b-slate-700 border-l-slate-700 rounded-full animate-spin"></div>
+                    </div>
+                </section>
+
+                <!-- Lista de Sonhos -->
+                <section id="list-view" class="view-section p-4 space-y-4">
+                    <h2 class="text-2xl font-light text-gray-200 mb-4">Seus Sonhos Recentes</h2>
+                    <div id="dream-list-container" class="space-y-4">
+                        <!-- Cards serão injetados aqui -->
+                    </div>
+                    <div id="empty-list-message" class="text-center text-slate-400 py-10 hidden">
+                        <p>Nenhum sonho registrado ainda.</p>
+                        <button id="add-first-dream-btn" class="mt-4 px-4 py-2 bg-violet-600 text-white rounded-lg shadow-md hover:bg-violet-500 transition-colors">
+                            Registrar primeiro sonho
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Formulário -->
+                <section id="form-view" class="view-section p-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <button class="nav-back-btn text-slate-400 hover:text-white">
+                            <i data-lucide="arrow-left"></i>
+                        </button>
+                        <h2 id="form-title" class="text-2xl font-light text-gray-200">Novo Sonho</h2>
+                        <div class="w-6"></div>
+                    </div>
+                    
+                    <form id="dream-form" class="space-y-5">
+                        <input type="hidden" id="dream-id-input" name="id">
+                        
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-slate-300 mb-1">Título</label>
+                            <input type="text" id="title" name="title" placeholder="Dê um nome ao seu sonho" required class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                        </div>
+                        
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-slate-300 mb-1">Descrição</label>
+                            <textarea id="description" name="description" rows="5" placeholder="Descreva o que aconteceu..." required class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all"></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="date" class="block text-sm font-medium text-slate-300 mb-1">Data</label>
+                                <input type="date" id="date" name="date" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                            </div>
+                            <div>
+                                <label for="emotion" class="block text-sm font-medium text-slate-300 mb-1">Emoção</label>
+                                <select id="emotion" name="emotion" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                                    <option value="paz">Paz</option>
+                                    <option value="alegria">Alegria</option>
+                                    <option value="medo">Medo</option>
+                                    <option value="saudade">Saudade</option>
+                                    <option value="confusao">Confusão</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="symbol" class="block text-sm font-medium text-slate-300 mb-1">Símbolo</label>
+                                <input type="text" id="symbol" name="symbol" placeholder="🖼️" maxLength="2" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                            </div>
+                            <div>
+                                <label for="tags" class="block text-sm font-medium text-slate-300 mb-1">Tags</label>
+                                <input type="text" id="tags" name="tags" placeholder="medo, voar, água" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full flex justify-center items-center gap-2 mt-6 px-4 py-3 bg-violet-600 text-white rounded-lg shadow-md hover:bg-violet-500 transition-colors font-semibold">
+                            <i data-lucide="save" class="w-5 h-5"></i>
+                            Salvar Sonho
+                        </button>
+                    </form>
+                </section>
+
+                <!-- Detalhe do Sonho -->
+                <section id="detail-view" class="view-section p-4">
+                    <button class="nav-back-btn absolute top-4 left-4 text-slate-400 hover:text-white z-20">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
+
+                    <div id="detail-header" class="relative p-5 rounded-xl shadow-lg -mx-4 -mt-4 border-b backdrop-blur-sm">
+                        <div class="flex justify-between items-start pt-10">
+                            <div class="flex-1">
+                                <h2 id="detail-title" class="text-3xl font-medium text-gray-100"></h2>
+                                <p id="detail-date" class="text-md text-slate-400 mt-2"></p>
+                            </div>
+                            <span id="detail-symbol" class="text-5xl ml-4 opacity-80"></span>
+                        </div>
+                    </div>
+
+                    <div class="py-6 space-y-4">
+                        <p id="detail-description" class="text-gray-200 whitespace-pre-wrap leading-relaxed"></p>
+                        <div id="detail-tags-container" class="flex flex-wrap gap-2 pt-4 border-t border-slate-700">
+                            <!-- Tags serão injetadas aqui -->
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col space-y-3 mt-6">
+                        <button id="analyze-btn" class="w-full flex justify-center items-center gap-2 px-4 py-3 bg-violet-600 text-white rounded-lg shadow-md hover:bg-violet-500 transition-colors font-semibold">
+                            <i data-lucide="wand-2" class="w-5 h-5"></i>
+                            Análise Poética
+                        </button>
+                        <button id="edit-btn" class="w-full px-4 py-2 bg-slate-700 text-slate-200 rounded-lg hover:bg-slate-600 transition-colors">
+                            Editar
+                        </button>
+                        <button id="delete-btn" class="w-full px-4 py-2 bg-transparent text-red-400 rounded-lg hover:bg-red-900/30 transition-colors">
+                            Apagar Sonho
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- Diário -->
+                <section id="journal-view" class="view-section p-4">
+                    <h2 class="text-2xl font-light text-gray-200 mb-6">Diário do Sono</h2>
+                    <div class="p-4 bg-slate-800/50 rounded-lg backdrop-blur-sm border border-slate-700">
+                        <canvas id="emotion-chart"></canvas>
+                        <p id="journal-empty-msg" class="text-center text-slate-400 py-10 hidden">
+                            Sem dados suficientes para o gráfico.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Explorar -->
+                <section id="explore-view" class="view-section p-4 space-y-6">
+                    <h2 class="text-2xl font-light text-gray-200">Explorar Sonhos</h2>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="random-dream-btn" class="flex-1 flex justify-center items-center gap-2 px-4 py-3 bg-slate-700 text-white rounded-lg shadow-md hover:bg-slate-600 transition-colors">
+                            <i data-lucide="shuffle" class="w-5 h-5"></i>
+                            Sonho Aleatório
+                        </button>
+                        <button id="export-btn" class="flex-1 flex justify-center items-center gap-2 px-4 py-3 bg-slate-700 text-white rounded-lg shadow-md hover:bg-slate-600 transition-colors">
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                            Exportar (.json)
+                        </button>
+                    </div>
+
+                    <div class="space-y-4 p-4 bg-slate-800/50 rounded-lg backdrop-blur-sm border border-slate-700">
+                        <h3 class="text-lg font-medium text-slate-200">Filtrar</h3>
+                        
+                        <div>
+                            <label for="filter-keyword" class="block text-sm font-medium text-slate-300 mb-1">Palavra-chave</label>
+                            <input type="text" id="filter-keyword" placeholder="Ex: voar, escuro..." class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                        </div>
+                        <div>
+                            <label for="filter-tag" class="block text-sm font-medium text-slate-300 mb-1">Tag</label>
+                            <input type="text" id="filter-tag" placeholder="Ex: família" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                        </div>
+                        <div>
+                            <label for="filter-emotion" class="block text-sm font-medium text-slate-300 mb-1">Emoção</label>
+                            <select id="filter-emotion" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                                <option value="">Todas</option>
+                                <option value="paz">Paz</option>
+                                <option value="alegria">Alegria</option>
+                                <option value="medo">Medo</option>
+                                <option value="saudade">Saudade</option>
+                                <option value="confusao">Confusão</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h3 id="filter-results-count" class="text-lg text-slate-300">Resultados (0)</h3>
+                        <div id="filter-results-container" class="space-y-3">
+                            <!-- Resultados serão injetados aqui -->
+                        </div>
+                        <p id="filter-empty-msg" class="text-center text-slate-400 py-5 hidden">
+                            Nenhum sonho encontrado.
+                        </p>
+                    </div>
+                </section>
+
+            </main>
+
+            <!-- Navegação Inferior -->
+            <nav class="relative z-20 grid grid-cols-4 items-center p-2 bg-slate-800/70 backdrop-blur-sm border-t border-slate-700">
+                <button data-view="list" class="nav-btn flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 text-violet-300">
+                    <i data-lucide="home"></i>
+                    <span class="text-xs mt-1">Início</span>
+                </button>
+                <button data-view="journal" class="nav-btn flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 text-slate-400 hover:text-slate-200">
+                    <i data-lucide="bar-chart-3"></i>
+                    <span class="text-xs mt-1">Diário</span>
+                </button>
+                <button data-view="explore" class="nav-btn flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 text-slate-400 hover:text-slate-200">
+                    <i data-lucide="search"></i>
+                    <span class="text-xs mt-1">Explorar</span>
+                </button>
+                <button id="add-new-btn-nav" class="flex flex-col items-center justify-center p-2 rounded-lg text-slate-400 hover:text-slate-200" title="Adicionar novo sonho">
+                    <div class="flex items-center justify-center w-12 h-12 bg-violet-600 rounded-full shadow-lg hover:bg-violet-500 transition-all duration-200 text-white -translate-y-6 border-4 border-slate-800">
+                        <i data-lucide="plus" class="w-7 h-7"></i>
+                    </div>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Modal: Análise Poética -->
+        <div id="analysis-modal" class="modal-overlay absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" style="display: none;">
+            <div class="relative w-full max-w-sm p-6 bg-slate-800 border border-violet-500 rounded-xl shadow-2xl">
+                <button id="analysis-modal-close" class="absolute top-3 right-3 text-slate-500 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div class="flex flex-col items-center text-center">
+                    <i data-lucide="wand-2" class="w-8 h-8 text-violet-300 mb-4"></i>
+                    <h3 class="text-xl font-medium text-gray-100 mb-4">Interpretação Poética</h3>
+                    
+                    <div id="analysis-loading" class="py-6 hidden">
+                        <div class="w-10 h-10 border-4 border-t-violet-400 border-r-slate-700 border-b-slate-700 border-l-slate-700 rounded-full animate-spin"></div>
+                        <p class="text-slate-400 mt-3 animate-pulse">Oniria está consultando o éter...</p>
+                    </div>
+                    
+                    <p id="analysis-error" class="text-red-400 hidden"></p>
+                    <p id="analysis-text" class="text-lg text-gray-300 italic leading-relaxed"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal: Confirmação de Exclusão -->
+        <div id="delete-modal" class="modal-overlay absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" style="display: none;">
+            <div class="relative w-full max-w-sm p-6 bg-slate-800 border border-red-500 rounded-xl shadow-2xl">
+                <div class="flex flex-col items-center text-center">
+                    <i data-lucide="trash-2" class="w-8 h-8 text-red-400 mb-4"></i>
+                    <h3 class="text-xl font-medium text-gray-100 mb-2">Apagar Sonho</h3>
+                    <p class="text-slate-300 mb-6">Tem certeza que deseja apagar este sonho? Esta ação é irreversível.</p>
+                    <div class="grid grid-cols-2 gap-3 w-full">
+                        <button id="delete-modal-cancel" class="w-full px-4 py-2 bg-slate-700 text-slate-200 rounded-lg hover:bg-slate-600 transition-colors">
+                            Cancelar
+                        </button>
+                        <button id="delete-modal-confirm" class="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors">
+                            Apagar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
