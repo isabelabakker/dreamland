@@ -1,0 +1,143 @@
+/* Estilos Globais e Animações de Fundo (Modo Noite) */
+@keyframes twinkle {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.8; }
+}
+
+.star {
+  position: absolute;
+  background: #FFF;
+  border-radius: 50%;
+  animation: twinkle 5s infinite;
+  box-shadow: 0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF;
+}
+
+/* Scrollbar suave */
+body, .smooth-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #4a5568 transparent;
+}
+
+.smooth-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.smooth-scroll::-webkit-scrollbar-thumb {
+  background-color: #4a5568;
+  border-radius: 3px;
+}
+
+.smooth-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Oculta views inativas */
+.view-section {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.view-section.active {
+    display: block;
+}
+
+/* Animação de fade-in */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Oculta modais */
+.modal-overlay {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.visible {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-box {
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.visible .modal-box {
+    transform: scale(1);
+}
+
+/* Melhorias para GitHub Pages */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Garantir que funcione em todos os navegadores */
+.h-\[100dvh\] {
+    height: 100vh;
+}
+
+@supports (height: 100dvh) {
+    .h-\[100dvh\] {
+        height: 100dvh;
+    }
+}
+
+/* Melhorias de responsividade */
+@media (max-width: 640px) {
+    .max-w-lg {
+        max-width: 100%;
+        margin: 0;
+        border: none;
+    }
+}
+
+/* Animações suaves para botões */
+button {
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Estilo para cards de sonho */
+.dream-card {
+    transition: all 0.3s ease;
+}
+
+.dream-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading spinner personalizado */
+.loading-spinner {
+    border: 4px solid #334155;
+    border-top: 4px solid #a855f7;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Estilo para tags */
+.tag {
+    background: linear-gradient(135deg, #475569, #334155);
+    border: 1px solid #64748b;
+}
+
+/* Estilo para emoções */
+.emotion-paz { border-color: #60a5fa; background: rgba(59, 130, 246, 0.1); }
+.emotion-alegria { border-color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
+.emotion-medo { border-color: #f87171; background: rgba(248, 113, 113, 0.1); }
+.emotion-saudade { border-color: #9ca3af; background: rgba(156, 163, 175, 0.1); }
+.emotion-confusao { border-color: #c084fc; background: rgba(192, 132, 252, 0.1); }
