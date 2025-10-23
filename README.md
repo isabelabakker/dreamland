@@ -24,8 +24,9 @@ Esta aplicação funciona inteiramente offline, guardando todos os seus dados de
 - localStorage: Utilizado como banco de dados local para persistência de dados.
 
 ## 🚀 Como Executar
-- Este é um aplicativo standalone (autónomo).
+- Este é um aplicativo standalone (autônomo).
 - Faça o download do ficheiro index.html.
 - Abra-o em qualquer navegador web moderno (Chrome, Firefox, Safari, Edge, etc.).
 - E é tudo! A aplicação funcionará imediatamente.
+
 
